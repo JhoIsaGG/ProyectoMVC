@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+iframe {
+    display: none;
+}
+
+.usersTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    border-radius: 20px;
+    border-style: hidden;
+    box-shadow: 0 0 0 1px #000000; 
+}
+
+.usersTable th, .usersTable td {
+    padding: 12px;
+    border: 1px solid #000000; 
+}
+
+.mainContainer {
+    margin: 50px auto;
+    width: 80%;
+}
+
+.elementUser {
+    padding: 10px;
+    border: 1px solid #210505;
+    background-color: aqua;
+}
+
+.buttonCreateUser {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #28a745;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.buttonCreateUser:hover {
+    background-color: #218838;
+}
+
+.buttonDeleteUser {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.buttonDeleteUser:hover {
+    background-color: #c82333;
+}
+
+.buttonEditUser {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+.buttonEditUser:hover {
+    background-color: #0069d9;
+}
+
+.buscadorUser {
+    width: 80%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
