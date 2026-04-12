@@ -8,7 +8,11 @@ class UsuarioModel {
     }
 
     public function getUsuarios(): array {
-        $sql = "SELECT * FROM usuarios ORDER BY codigo ASC";
+        $sql = "SELECT u.*, r.nombre AS rol 
+                FROM usuarios u
+                JOIN roles r ON u.id_rol = r.id_rol
+                ORDER BY u.id_usuario ASC";
+
         $resultado = $this->conexion->query($sql);
 
         // Verificar si la consulta falló
@@ -30,14 +34,19 @@ class UsuarioModel {
      * @param string $codigo: el codigo del usuario a buscar
      */
 
-    public function getUsuario(string $codigo): ?array {
-        $sql = "SELECT * FROM usuarios WHERE codigo = ? and estado = ? limit 1";
+    public function getUsuario(string $id): ?array {
+        $sql = "SELECT u.*, r.nombre AS rol 
+                FROM usuarios u
+                INNER JOIN roles r ON u.id_rol = r.id_rol
+                WHERE u.id_usuario = ? AND u.estado = 1 
+                LIMIT 1";
+
         $stmt = $this->conexion->prepare($sql);
-        $estado = 1; // Solo buscamos usuarios activos
+        
         if(!$stmt) {
             return null; // Error al preparar la consulta
         }
-        $stmt->bind_param("si", $codigo, $estado);
+        $stmt->bind_param("s", $id);
         $stmt->execute();
         $resultado = $stmt->get_result();
         $usuario = $resultado->fetch_assoc() ?: null;
@@ -81,27 +90,32 @@ class UsuarioModel {
         $stmt->execute();
     }
 
-    public function actualizarUsuario(array $datos): bool {
-        $sql = "UPDATE usuarios SET codigo = ?, nombre = ?, username = ?, clave = ?, estado = ? WHERE codigo = ?";
+      public function actualizarPassword(int $id_usuario, string $password): bool {
+        $sql = "UPDATE usuarios SET password = ? WHERE id_usuario = ?";
+
         $stmt = $this->conexion->prepare($sql);
+
         if (!$stmt) {
-            return false; // Error al preparar la consulta
+            return false;
         }
-        
-        $stmt->bind_param("ssssss", $datos['codigo'], $datos['nombre'], $datos['username'], $datos['clave'], $datos['estado'], $datos['codigo']);
+
+        $stmt->bind_param("si", $password, $id_usuario);
+
         return $stmt->execute();
     }
 
-    public function eliminarUsuario(string $codigo): bool {
-        $sql = "DELETE FROM usuarios WHERE codigo = ?";
-        $stmt = $this->conexion->prepare($sql);
-        if(!$stmt) {
-            return false; // Error al preparar la consulta
-        }
-        $stmt->bind_param("s", $codigo);
-        $stmt->execute();
-        $resultado = $stmt->affected_rows();
+    public function eliminarUsuario(int $id): bool {
+        // Mejor usar borrado lógico
+        $sql = "UPDATE usuarios SET estado = 0 WHERE id_usuario = ?";
 
-        return $resultado > 0;
+        $stmt = $this->conexion->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        return $stmt->execute();
     }
 }
