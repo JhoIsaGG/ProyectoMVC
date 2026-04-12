@@ -37,7 +37,7 @@ class UsuarioModel {
     public function getUsuario(string $id): ?array {
         $sql = "SELECT u.*, r.nombre AS rol 
                 FROM usuarios u
-                INNER JOIN roles r ON u.id_rol = r.id_rol
+                JOIN roles r ON u.id_rol = r.id_rol
                 WHERE u.id_usuario = ? AND u.estado = 1 
                 LIMIT 1";
 

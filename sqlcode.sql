@@ -7,6 +7,8 @@ CREATE TABLE roles (
 
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombres VARCHAR(100) NOT NULL,
+    apellidos VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     email VARCHAR(100),
@@ -20,8 +22,6 @@ CREATE TABLE usuarios (
 CREATE TABLE alumnos (
     id_alumno INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-    nombres VARCHAR(100),
-    apellidos VARCHAR(100),
     fecha_nacimiento DATE,
     telefono VARCHAR(20),
     direccion TINYTEXT,
@@ -33,8 +33,6 @@ CREATE TABLE alumnos (
 CREATE TABLE profesores (
     id_profesor INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-    nombres VARCHAR(100),
-    apellidos VARCHAR(100),
     telefono VARCHAR(20),
     direccion TINYTEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
