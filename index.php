@@ -5,9 +5,14 @@ session_start();
 require "config/env.php";
 require "Router.php";
 require "controller/UsuariosController.php";
+require "controller/RolesController.php";
+require "controller/NivelesController.php";
 
 $router = new Router();
 $usuariosController = new UsuariosController();
+$rolesController = new RolesController();
+$nivelesController = new NivelesController();
+
 
 // ruta para usuarios
 $router->add('usuarios', [$usuariosController, 'index']);
@@ -18,6 +23,26 @@ $router->add('usuario_update', [$usuariosController, 'update']);
 $router->add('usuario_delete', [$usuariosController, 'delete']);
 $router->add('usuario_search', [$usuariosController, 'search']);
 
+
+// ruta para roles
+$router->add('roles', [$rolesController, 'index']);
+$router->add('rol_new', [$rolesController, 'new']);
+$router->add('rol_create', [$rolesController, 'create']);
+$router->add('rol_edit', [$rolesController, 'edit']);
+$router->add('rol_update', [$rolesController, 'update']);
+$router->add('rol_delete', [$rolesController, 'delete']);
+
+// ruta para niveles
+$router->add('niveles', [$nivelesController, 'index']);
+$router->add('nivel_new', [$nivelesController, 'new']);
+$router->add('nivel_create', [$nivelesController, 'create']);
+$router->add('nivel_edit', [$nivelesController, 'edit']);
+$router->add('nivel_update', [$nivelesController, 'update']);
+$router->add('nivel_delete', [$nivelesController, 'delete']);
+
+$router->add("home", function() {
+    require "view/index.php";
+});
 
 $routeDefault = empty($_SESSION['usuario']) ? '/' : 'usuarios';
 

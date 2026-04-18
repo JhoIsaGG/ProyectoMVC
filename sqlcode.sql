@@ -1,6 +1,7 @@
 CREATE TABLE roles (
     id_rol INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50) NOT NULL,
+    estado BOOLEAN NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
@@ -11,7 +12,10 @@ CREATE TABLE usuarios (
     apellidos VARCHAR(100) NOT NULL,
     username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    email VARCHAR(100),
+    email VARCHAR(100)  NOT NULL UNIQUE,
+    telefono VARCHAR(20) NOT NULL,
+    fecha_nacimiento DATE NOT NULL,
+    direccion TINYTEXT NOT NULL,
     id_rol INT NOT NULL,
     estado BOOLEAN NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -22,9 +26,6 @@ CREATE TABLE usuarios (
 CREATE TABLE alumnos (
     id_alumno INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-    fecha_nacimiento DATE,
-    telefono VARCHAR(20),
-    direccion TINYTEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
@@ -33,8 +34,6 @@ CREATE TABLE alumnos (
 CREATE TABLE profesores (
     id_profesor INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
-    telefono VARCHAR(20),
-    direccion TINYTEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
@@ -62,7 +61,9 @@ CREATE TABLE niveles (
     id_nivel INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(50),
     descripcion TEXT,
-    estado BOOLEAN
+    estado BOOLEAN, 
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
 CREATE TABLE cursos (

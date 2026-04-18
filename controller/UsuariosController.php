@@ -18,14 +18,14 @@ public function __construct(){
  */
 public function index():void{
     $usuarios = $this->modelo->getUsuarios();
-    include __DIR__ ."/../view/index.php";
+    include __DIR__ ."/../view/usuarios/index.php";
 }
 
 /**
  * NEW
  */
 public function new():void{
-    include __DIR__ ."/../view/new.php";
+    include __DIR__ ."/../view/usuarios/new.php";
 }
 
 /**
@@ -37,7 +37,7 @@ public function new():void{
  */
 public function search():void{
     $usuarios = $this->modelo->buscarUsuarioNombre($_POST['nombre'] ?? '');
-    include __DIR__ ."/../view/index.php";
+    include __DIR__ ."/../view/usuarios/index.php";
 }   
 
 /**
@@ -50,7 +50,7 @@ public function edit():void{
         header("Location: index.php?action=usuarios");
         exit();
     }
-    include __DIR__ ."/../view/edit.php";
+    include __DIR__ ."/../view/usuarios/edit.php";
 }
 
 

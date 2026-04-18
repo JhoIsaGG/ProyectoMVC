@@ -1,80 +1,135 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
-}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
 
-iframe {
-    display: none;
-}
+        body {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+        }
 
-.usersTable {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-    border-radius: 20px;
-    border-style: hidden;
-    box-shadow: 0 0 0 1px #000000; 
-}
+        header {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(6px);
+            padding: 15px 40px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
 
-.usersTable th, .usersTable td {
-    padding: 12px;
-    border: 1px solid #000000; 
-}
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-.mainContainer {
-    margin: 50px auto;
-    width: 80%;
-}
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
-.elementUser {
-    padding: 10px;
-    border: 1px solid #210505;
-    background-color: aqua;
-}
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 18px;
+            flex-wrap: wrap;
+        }
 
-.buttonCreateUser {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #28a745;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-}
+        .nav-links li a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
 
-.buttonCreateUser:hover {
-    background-color: #218838;
-}
+        .nav-links li a:hover {
+            color: #ffd166;
+        }
 
-.buttonDeleteUser {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #dc3545;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-.buttonDeleteUser:hover {
-    background-color: #c82333;
-}
+        .hero {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 120px 20px 20px;
+        }
 
-.buttonEditUser {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-}
-.buttonEditUser:hover {
-    background-color: #0069d9;
-}
+        .hero-content {
+            max-width: 800px;
+        }
 
-.buscadorUser {
-    width: 80%;
-    padding: 10px;
-    margin-bottom: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
+        .hero h1 {
+            font-size: 52px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 28px;
+            background: #ffd166;
+            color: #222;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #ffb703;
+        }
+
+        section {
+            padding: 80px 40px;
+            text-align: center;
+        }
+
+        section h2 {
+            font-size: 34px;
+            margin-bottom: 15px;
+        }
+
+        section p {
+            font-size: 18px;
+            max-width: 700px;
+            margin: auto;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: rgba(0, 0, 0, 0.25);
+            text-align: center;
+            padding: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 900px) {
+            nav {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .hero h1 {
+                font-size: 38px;
+            }
+
+            .hero p {
+                font-size: 18px;
+            }
+
+            .nav-links {
+                justify-content: center;
+            }
+        }

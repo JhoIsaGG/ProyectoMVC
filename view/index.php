@@ -1,52 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Document</title>
-</head>
+    <title>Academia de Idiomas</title>
+    <link rel="stylesheet" href="../assets/css/styles.css"></head>
 <body>
-    <div class="mainContainer">
-    <p><a class="buttonCreateUser" href="index.php?action=usuario_new">Crear nuevo usuario</a></p>
-    <form method="POST" action="index.php?action=usuario_search">
-        <input class="buscadorUser" type="text" name="nombre" placeholder="Buscar por nombre...">
-        <button class="buttonCreateUser" type="submit">Buscar</button>
-    </form>
-    <table class="usersTable">
-        <thead>
-            <tr>
-                <th>codigo</th>
-                <th>nombre</th>
-                <th>Username</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($usuarios as $user): ?>
-                <tr class="elementUser">
-                    <td><?php echo htmlspecialchars($user['codigo']); ?></td>
-                    <td><?php echo htmlspecialchars($user['nombre']); ?></td>
-                    <td><?php echo htmlspecialchars($user['username']); ?></td>
-                    <td><?php echo htmlspecialchars($user['estado']); ?></td>
-                    <td><a class="buttonEditUser" href="index.php?action=usuario_edit&codigo=<?php echo urlencode($user['codigo']); ?>">Editar</a>
-                    <form target="fakeFrame" action="index.php?action=usuario_delete" method="POST" style="display:inline;">
-                        <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($user['codigo']); ?>">
-                        <button class="buttonDeleteUser" type="submit" onclick="return confirmacionEliminar('<?php echo $user['nombre']; ?>');">Eliminar</button>
-                    </form>s
-                    <iframe name="fakeFrame" class="fakeFrame"></iframe>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-    </div>
+    <header>
+        <nav>
+            <div class="logo">Academia de Idiomas</div>
+            <ul class="nav-links">
+                <li><a href="index.php?action=cursos">Cursos</a></li>
+                <li><a href="index.php?action=evaluaciones">Evaluaciones</a></li>
+                <li><a href="index.php?action=idiomas">Idiomas</a></li>
+                <li><a href="index.php?action=inscripciones">Inscripciones</a></li>
+                <li><a href="index.php?action=niveles">Niveles</a></li>
+                <li><a href="index.php?action=profesores">Profesores</a></li>
+                <li><a href="index.php?action=roles">Roles / Tipos Evaluación / Usuarios</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Bienvenido a la Academia de Idiomas</h1>
+                <p>
+                    Aprende nuevos idiomas con cursos dinámicos, evaluaciones personalizadas
+                    y un equipo de profesores especializados para cada nivel.
+                </p>
+                <a href="#inscripciones" class="btn">Inscribirme ahora</a>
+            </div>
+        </section>
+
+        <section id="cursos">
+            <h2>Cursos</h2>
+            <p>
+                Descubre nuestra variedad de cursos diseñados para principiantes, intermedios
+                y avanzados en diferentes idiomas.
+            </p>
+        </section>
+
+        <section id="evaluaciones">
+            <h2>Evaluaciones</h2>
+            <p>
+                Realiza pruebas de diagnóstico, parciales y finales para medir tu progreso
+                y fortalecer tus habilidades lingüísticas.
+            </p>
+        </section>
+
+        <section id="idiomas">
+            <h2>Idiomas</h2>
+            <p>
+                Ofrecemos formación en inglés, francés, alemán, italiano, portugués y más,
+                adaptándonos a tus objetivos personales y profesionales.
+            </p>
+        </section>
+
+        <section id="inscripciones">
+            <h2>Inscripciones</h2>
+            <p>
+                Regístrate fácilmente en nuestros programas y accede a una experiencia educativa
+                completa desde el primer día.
+            </p>
+        </section>
+
+        <section id="niveles">
+            <h2>Niveles</h2>
+            <p>
+                Contamos con niveles básicos, intermedios y avanzados alineados con estándares
+                internacionales para tu desarrollo académico.
+            </p>
+        </section>
+
+        <section id="profesores">
+            <h2>Profesores</h2>
+            <p>
+                Nuestro equipo de profesores está altamente capacitado para acompañarte en tu
+                proceso de aprendizaje con metodologías modernas.
+            </p>
+        </section>
+
+        <section id="gestion">
+            <h2>Roles, Tipos de Evaluación y Usuarios</h2>
+            <p>
+                Gestiona perfiles de usuarios, roles administrativos y diferentes tipos de
+                evaluaciones dentro de la plataforma académica.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Academia de Idiomas. Todos los derechos reservados.</p>
+    </footer>
+
 </body>
-<script>
-    function confirmacionEliminar(nombre) {
-        var respuesta = confirm("¿Estás seguro de que deseas eliminar el usuario " + nombre + "?");
-        return respuesta;
-    }
-    </script>
 </html>

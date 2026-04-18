@@ -50,7 +50,6 @@ class UsuarioModel {
         $stmt->execute();
         $resultado = $stmt->get_result();
         $usuario = $resultado->fetch_assoc() ?: null;
-                print_r($usuario);
 
         if ($resultado->num_rows === 0) {
             return null;
@@ -60,7 +59,10 @@ class UsuarioModel {
     }
 
     public function buscarUsuarioNombre(string $nombre): array{
-        $sql = "SELECT * FROM usuarios WHERE nombre LIKE ? AND estado = ?";
+        $sql = "SELECT * 
+                FROM usuarios 
+                WHERE nombres 
+                LIKE ? AND estado = ?";
         $stmt = $this->conexion->prepare($sql);
         $estado = 1; // Solo buscamos usuarios activos
         if (!$stmt) {
@@ -80,18 +82,51 @@ class UsuarioModel {
     }
 
     public function crearUsuario(array $datos): bool {
-        $sql = "INSERT INTO usuarios (codigo, nombre, username, clave, estado) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO usuarios (nombres, apellidos, username, password, email, id_rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) {
             return false; // Error al preparar la consulta
         }
         $estado = 1; 
-        $stmt->bind_param("ssssi", $datos['codigo'], $datos['nombre'], $datos['username'], $datos['clave'], $estado);
+        $stmt->bind_param("sssssii", $datos['nombres'], $datos['apellidos'], $datos['username'], $datos['password'], $datos['email'], $datos['id_rol'], $estado);
         $stmt->execute();
+        return true;
+    }
+
+        public function actualizarUsuario(array $datos): bool {
+        $sql = "UPDATE usuarios 
+                SET nombres = ?, 
+                    apellidos = ?, 
+                    username = ?, 
+                    email = ?, 
+                    id_rol = ?, 
+                    estado = ?
+                WHERE id_usuario = ?";
+
+        $stmt = $this->conexion->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param(
+            "ssssiii",
+            $datos['nombres'],
+            $datos['apellidos'],
+            $datos['username'],
+            $datos['email'],
+            $datos['id_rol'],
+            $datos['estado'],
+            $datos['id_usuario']
+        );
+
+        return $stmt->execute();
     }
 
       public function actualizarPassword(int $id_usuario, string $password): bool {
-        $sql = "UPDATE usuarios SET password = ? WHERE id_usuario = ?";
+        $sql = "UPDATE usuarios 
+                SET password = ? 
+                WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
 
@@ -106,7 +141,9 @@ class UsuarioModel {
 
     public function eliminarUsuario(int $id): bool {
         // Mejor usar borrado lógico
-        $sql = "UPDATE usuarios SET estado = 0 WHERE id_usuario = ?";
+        $sql = "UPDATE usuarios 
+                SET estado = 0 
+                WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);
 
