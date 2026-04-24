@@ -7,6 +7,29 @@ class UsuarioModel {
         $this->conexion = $p_conexion;
     }
 
+    public function login(string $username, string $password): ?array {
+        $sql = "SELECT *
+                FROM usuarios 
+                WHERE username = ? AND password = ? AND estado = 1 
+                LIMIT 1";
+
+        $stmt = $this->conexion->prepare($sql);
+        
+        if(!$stmt) {
+            return null; // Error al preparar la consulta
+        }
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $usuario = $resultado->fetch_assoc() ?: null;
+
+        if ($resultado->num_rows === 0) {
+            return null;
+        }
+
+        return $usuario;
+    }
+
     public function getUsuarios(): array {
         $sql = "SELECT u.*, r.nombre AS rol 
                 FROM usuarios u

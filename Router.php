@@ -17,6 +17,13 @@ class Router {
             $requestRoute = $defaultRoute;
         }
 
+        $publicRoutes = ['index', 'login', 'usuario_login'];
+
+        if (!in_array($requestRoute, $publicRoutes) && empty($_SESSION['usuario'])) {
+            header("Location: index.php?action=index");
+            exit;
+        }
+
         if (isset($this->routes[$requestRoute])) {
             call_user_func($this->routes[$requestRoute]);
             return;
