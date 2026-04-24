@@ -13,6 +13,30 @@ public function __construct(){
         $this->modelo = new UsuarioModel($conexion);
 }
 
+
+/**
+ * LOGIN
+ */
+public function login():void{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
+
+        $usuario = $this->modelo->login($username, $password);
+        if ($usuario) {
+            session_start();
+            $_SESSION['usuario'] = $usuario;
+            header("Location: index.php?action=home");
+            exit();
+        } else {
+            echo "Credenciales inválidas. Intente nuevamente.";
+        }
+    } else {
+        include __DIR__ ."/../view/login.php";
+    }
+}
+
+
 /**
  * INDEX
  */
@@ -27,10 +51,6 @@ public function index():void{
 public function new():void{
     include __DIR__ ."/../view/usuarios/new.php";
 }
-
-/**
- * SHOW
- */
 
 /**
  * SEARCH WITH NAME

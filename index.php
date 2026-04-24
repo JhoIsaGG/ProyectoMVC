@@ -15,6 +15,7 @@ $nivelesController = new NivelesController();
 
 
 // ruta para usuarios
+$router->add('usuario_login', [$usuariosController, 'login']);
 $router->add('usuarios', [$usuariosController, 'index']);
 $router->add('usuario_new', [$usuariosController, 'new']);
 $router->add('usuario_create', [$usuariosController, 'create']);
@@ -40,11 +41,19 @@ $router->add('nivel_edit', [$nivelesController, 'edit']);
 $router->add('nivel_update', [$nivelesController, 'update']);
 $router->add('nivel_delete', [$nivelesController, 'delete']);
 
-$router->add("home", function() {
+$router->add("index", function() {
     require "view/index.php";
 });
 
-$routeDefault = empty($_SESSION['usuario']) ? '/' : 'usuarios';
+$router->add("login", function() {
+    require "view/login.php";
+});
+
+$router->add("home", function() {
+    require "view/home.php";
+});
+
+$routeDefault = empty($_SESSION['usuario']) ? 'index' : 'home';
 
 $router->dispatch($routeDefault);
 
