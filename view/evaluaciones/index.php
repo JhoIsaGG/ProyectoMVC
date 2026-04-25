@@ -22,7 +22,7 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Id_inscripcion</th>
+                        <th>Id_curso</th>
                         <th>Nota</th>
                         <th>Id_tipo_evaluacion</th>
                         <th>Fecha_publicacion</th>
@@ -37,7 +37,7 @@
                         <?php foreach ($items as $item): ?>
                             <tr class="element-user">
                                 <td><?php echo htmlspecialchars($item['id_evaluacion']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_inscripcion']); ?></td>
+                                <td><?php echo htmlspecialchars($item['id_curso']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nota']); ?></td>
                                 <td><?php echo htmlspecialchars($item['id_tipo_evaluacion']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_publicacion']); ?></td>

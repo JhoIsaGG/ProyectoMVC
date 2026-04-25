@@ -24,7 +24,7 @@ class ProfesorModel {
     }
 
     public function getprofesorById(int $id): ?array {
-        $sql = "SELECT p.*, u.nombres, u.apellidos, u.username, u.email, u.telefono, u.fecha_nacimiento, u.direccion, u.estado 
+        $sql = "SELECT p.*, u.nombres, u.apellidos, u.username, u.email, u.telefono, u.fecha_nacimiento, u.direccion, u.estado, u.id_rol 
                 FROM profesores p 
                 JOIN usuarios u ON p.id_usuario = u.id_usuario
                 WHERE p.id_profesor = ?";

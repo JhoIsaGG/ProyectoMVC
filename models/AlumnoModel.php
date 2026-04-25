@@ -26,7 +26,7 @@ class AlumnoModel {
     }
 
     public function getalumnoById(int $id): ?array {
-        $sql = "SELECT a.*, u.nombres, u.apellidos, u.username, u.email, u.telefono, u.fecha_nacimiento, u.direccion, u.estado 
+        $sql = "SELECT a.*, u.nombres, u.apellidos, u.username, u.email, u.telefono, u.fecha_nacimiento, u.direccion, u.estado, u.id_rol 
                 FROM alumnos a 
                 JOIN usuarios u ON a.id_usuario = u.id_usuario
                 WHERE a.id_alumno = ?";

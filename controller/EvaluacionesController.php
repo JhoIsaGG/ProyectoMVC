@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ ."/../models/EvaluacionModel.php";
-require_once __DIR__ ."/../models/InscripcionModel.php";
+require_once __DIR__ ."/../models/CursoModel.php";
 require_once __DIR__ ."/../models/TipoEvaluacionModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class EvaluacionesController {
     private $modelo;
-    private $inscripcionModelo;
+    private $cursoModelo;
     private $tipoModelo;
 
     public function __construct() {
         $conexion = (new Conexion())->conectar();
         $this->modelo = new EvaluacionModel($conexion);
-        $this->inscripcionModelo = new InscripcionModel($conexion);
+        $this->cursoModelo = new CursoModel($conexion);
         $this->tipoModelo = new TipoEvaluacionModel($conexion);
     }
 
@@ -22,7 +22,7 @@ class EvaluacionesController {
     }
 
     public function new(): void {
-        $inscripciones = $this->inscripcionModelo->getInscripcionModels();
+        $cursos = $this->cursoModelo->getCursoModels();
         $tipos = $this->tipoModelo->getTipoEvaluacionModels();
         include __DIR__ ."/../view/evaluaciones/new.php";
     }
@@ -38,7 +38,7 @@ class EvaluacionesController {
             header("Location: index.php?action=evaluaciones");
             exit();
         }
-        $inscripciones = $this->inscripcionModelo->getInscripcionModels();
+        $cursos = $this->cursoModelo->getCursoModels();
         $tipos = $this->tipoModelo->getTipoEvaluacionModels();
         include __DIR__ ."/../view/evaluaciones/edit.php";
     }
@@ -48,7 +48,7 @@ class EvaluacionesController {
             $exito = $this->modelo->crearevaluacion($_POST);
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al crear.";
-                $inscripciones = $this->inscripcionModelo->getInscripcionModels();
+                $cursos = $this->cursoModelo->getCursoModels();
                 $tipos = $this->tipoModelo->getTipoEvaluacionModels();
                 include __DIR__ ."/../view/evaluaciones/new.php";
                 return;
@@ -64,7 +64,7 @@ class EvaluacionesController {
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
                 $evaluacion = $_POST;
-                $inscripciones = $this->inscripcionModelo->getInscripcionModels();
+                $cursos = $this->cursoModelo->getCursoModels();
                 $tipos = $this->tipoModelo->getTipoEvaluacionModels();
                 include __DIR__ ."/../view/evaluaciones/edit.php";
                 return;

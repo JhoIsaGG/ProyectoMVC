@@ -21,11 +21,11 @@
 
         <form action="index.php?action=evaluacion_create" method="POST" class="user-form">
             <div class="form-col">
-                <label for="id_inscripcion">Inscripción:</label>
-                <select id="id_inscripcion" name="id_inscripcion" required>
-                    <option value="">Seleccione una inscripción...</option>
-                    <?php foreach ($inscripciones as $inscripcion): ?>
-                        <option value="<?php echo htmlspecialchars($inscripcion['id_inscripcion']); ?>"><?php echo htmlspecialchars($inscripcion['id_inscripcion']); ?></option>
+                <label for="id_curso">Curso:</label>
+                <select id="id_curso" name="id_curso" required>
+                    <option value="">Seleccione un curso...</option>
+                    <?php foreach ($cursos as $curso): ?>
+                        <option value="<?php echo htmlspecialchars($curso['id_curso']); ?>"><?php echo htmlspecialchars($curso['nombre']); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

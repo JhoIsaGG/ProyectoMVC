@@ -105,7 +105,7 @@ CREATE TABLE tipos_evaluacion (
 
 CREATE TABLE evaluaciones (
     id_evaluacion INT AUTO_INCREMENT PRIMARY KEY,
-    id_inscripcion INT NOT NULL,
+    id_curso INT NOT NULL,
     nota DECIMAL(5,2),
     id_tipo_evaluacion INT NOT NULL,
     fecha_publicacion DATE,
@@ -114,6 +114,6 @@ CREATE TABLE evaluaciones (
     estado BOOLEAN,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_inscripcion) REFERENCES inscripciones(id_inscripcion),
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
     FOREIGN KEY (id_tipo_evaluacion) REFERENCES tipos_evaluacion(id_tipo_evaluacion)
 );
