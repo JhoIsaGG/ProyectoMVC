@@ -1,13 +1,13 @@
 <?php
-class NivelModel {
+class InscripcionModel {
     private $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    public function getNivelModels(): array {
-        $sql = "SELECT * FROM niveles ORDER BY id_nivel DESC";
+    public function getInscripcionModels(): array {
+        $sql = "SELECT * FROM inscripciones ORDER BY id_inscripcion DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -18,8 +18,8 @@ class NivelModel {
         return $items;
     }
 
-    public function getnivelById(int $id): ?array {
-        $sql = "SELECT * FROM niveles WHERE id_nivel = ?";
+    public function getinscripcionById(int $id): ?array {
+        $sql = "SELECT * FROM inscripciones WHERE id_inscripcion = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -27,14 +27,14 @@ class NivelModel {
         return $result->fetch_assoc() ?: null;
     }
 
-    public function crearnivel(array $datos): bool|string {
-        $sql = "INSERT INTO niveles (nombre, descripcion, estado) VALUES (?, ?, ?)";
+    public function crearinscripcion(array $datos): bool|string {
+        $sql = "INSERT INTO inscripciones (id_alumno, id_curso) VALUES (?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $datos['estado'] = 1;
         
-        $stmt->bind_param("ssi", $datos['nombre'], $datos['descripcion'], $datos['estado']);
+        
+        $stmt->bind_param("ii", $datos['id_alumno'], $datos['id_curso']);
         
         try {
             $stmt->execute();
@@ -45,12 +45,12 @@ class NivelModel {
         }
     }
 
-    public function actualizarnivel(array $datos): bool|string {
-        $sql = "UPDATE niveles SET nombre = ?, descripcion = ?, estado = ? WHERE id_nivel = ?";
+    public function actualizarinscripcion(array $datos): bool|string {
+        $sql = "UPDATE inscripciones SET id_alumno = ?, id_curso = ? WHERE id_inscripcion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("ssii", $datos['nombre'], $datos['descripcion'], $datos['estado'], $datos['id_nivel']);
+        $stmt->bind_param("iii", $datos['id_alumno'], $datos['id_curso'], $datos['id_inscripcion']);
         
         try {
             $stmt->execute();
@@ -61,20 +61,13 @@ class NivelModel {
         }
     }
 
-    public function eliminarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 0 WHERE id_nivel = ?";
+    public function eliminarinscripcion(int $id): bool {
+        $sql = "DELETE FROM inscripciones WHERE id_inscripcion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
-    public function reactivarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 1 WHERE id_nivel = ?";
-        $stmt = $this->conexion->prepare($sql);
-        if (!$stmt) return false;
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
-    }
 }
 ?>

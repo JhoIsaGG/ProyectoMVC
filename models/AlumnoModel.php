@@ -1,13 +1,20 @@
 <?php
-class NivelModel {
+class AlumnoModel {
     private $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    public function getNivelModels(): array {
-        $sql = "SELECT * FROM niveles ORDER BY id_nivel DESC";
+    public function getAlumnoModels(): array {
+        $sql = "SELECT a.id_alumno, a.id_usuario, u.nombres, u.apellidos, u.username, 
+                       GROUP_CONCAT(c.nombre SEPARATOR ', ') as cursos_inscritos
+                FROM alumnos a
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                LEFT JOIN inscripciones i ON a.id_alumno = i.id_alumno
+                LEFT JOIN cursos c ON i.id_curso = c.id_curso
+                GROUP BY a.id_alumno
+                ORDER BY a.id_alumno DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -18,8 +25,11 @@ class NivelModel {
         return $items;
     }
 
-    public function getnivelById(int $id): ?array {
-        $sql = "SELECT * FROM niveles WHERE id_nivel = ?";
+    public function getalumnoById(int $id): ?array {
+        $sql = "SELECT a.*, u.nombres, u.apellidos, u.username, u.email, u.telefono, u.fecha_nacimiento, u.direccion, u.estado 
+                FROM alumnos a 
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                WHERE a.id_alumno = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -27,14 +37,14 @@ class NivelModel {
         return $result->fetch_assoc() ?: null;
     }
 
-    public function crearnivel(array $datos): bool|string {
-        $sql = "INSERT INTO niveles (nombre, descripcion, estado) VALUES (?, ?, ?)";
+    public function crearalumno(array $datos): bool|string {
+        $sql = "INSERT INTO alumnos (id_usuario) VALUES (?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $datos['estado'] = 1;
         
-        $stmt->bind_param("ssi", $datos['nombre'], $datos['descripcion'], $datos['estado']);
+        
+        $stmt->bind_param("i", $datos['id_usuario']);
         
         try {
             $stmt->execute();
@@ -45,12 +55,12 @@ class NivelModel {
         }
     }
 
-    public function actualizarnivel(array $datos): bool|string {
-        $sql = "UPDATE niveles SET nombre = ?, descripcion = ?, estado = ? WHERE id_nivel = ?";
+    public function actualizaralumno(array $datos): bool|string {
+        $sql = "UPDATE alumnos SET id_usuario = ? WHERE id_alumno = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("ssii", $datos['nombre'], $datos['descripcion'], $datos['estado'], $datos['id_nivel']);
+        $stmt->bind_param("ii", $datos['id_usuario'], $datos['id_alumno']);
         
         try {
             $stmt->execute();
@@ -61,20 +71,13 @@ class NivelModel {
         }
     }
 
-    public function eliminarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 0 WHERE id_nivel = ?";
+    public function eliminaralumno(int $id): bool {
+        $sql = "DELETE FROM alumnos WHERE id_alumno = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
-    public function reactivarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 1 WHERE id_nivel = ?";
-        $stmt = $this->conexion->prepare($sql);
-        if (!$stmt) return false;
-        $stmt->bind_param("i", $id);
-        return $stmt->execute();
-    }
 }
 ?>

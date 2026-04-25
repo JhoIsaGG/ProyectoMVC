@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Roles</title>
+    <title>Idiomas</title>
 </head>
 <body>
 
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="mainContainer user-management-container" style="margin-top: 100px;">
-        <h2 class="user-management-title">Gestión de Roles</h2>
+        <h2 class="user-management-title">Gestión de Idiomas</h2>
         
         <div class="actions-bar">
-            <a class="btn btn-create-user" href="index.php?action=rol_new">+ Crear nuevo</a>
+            <a class="btn btn-create-user" href="index.php?action=idioma_new">+ Crear nuevo</a>
         </div>
         
         <div class="table-responsive">
@@ -31,7 +31,7 @@
                     <?php if (!empty($items)): ?>
                         <?php foreach ($items as $item): ?>
                             <tr class="element-user">
-                                <td><?php echo htmlspecialchars($item['id_rol']); ?></td>
+                                <td><?php echo htmlspecialchars($item['id_idioma']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre']); ?></td>
                                 <td>
                                     <?php if ($item['estado'] == 1): ?>
@@ -42,14 +42,14 @@
                                 </td>
                                 <td>
                                     <?php if ($item['estado'] == 1): ?>
-                                        <a class="btn btn-edit-sm" href="index.php?action=rol_edit&codigo=<?php echo urlencode($item['id_rol']); ?>">Editar</a>
-                                        <form target="fakeFrame" action="index.php?action=rol_delete" method="POST" style="display:inline;">
-                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_rol']); ?>">
+                                        <a class="btn btn-edit-sm" href="index.php?action=idioma_edit&codigo=<?php echo urlencode($item['id_idioma']); ?>">Editar</a>
+                                        <form target="fakeFrame" action="index.php?action=idioma_delete" method="POST" style="display:inline;">
+                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_idioma']); ?>">
                                             <button class="btn btn-delete-sm" type="submit" onclick="return confirmacionEliminar();">Eliminar</button>
                                         </form>
                                     <?php else: ?>
-                                        <form target="fakeFrame" action="index.php?action=rol_reactivate" method="POST" style="display:inline;">
-                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_rol']); ?>">
+                                        <form target="fakeFrame" action="index.php?action=idioma_reactivate" method="POST" style="display:inline;">
+                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_idioma']); ?>">
                                             <button class="btn btn-reactivate-sm" type="submit" onclick="return confirmacionReactivar();">Reactivar</button>
                                         </form>
                                     <?php endif; ?>

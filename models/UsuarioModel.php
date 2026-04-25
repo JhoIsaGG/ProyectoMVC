@@ -104,7 +104,7 @@ class UsuarioModel {
         return $usuarios;
     }
 
-    public function crearUsuario(array $datos): bool|string {
+    public function crearUsuario(array $datos): int|string|bool {
         $sql = "INSERT INTO usuarios (nombres, apellidos, username, password, email, telefono, fecha_nacimiento, direccion, id_rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) {
@@ -115,7 +115,7 @@ class UsuarioModel {
         
         try {
             $stmt->execute();
-            return true;
+            return $stmt->insert_id;
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) {
                 return "El nombre de usuario o correo ya está en uso.";

@@ -1,76 +1,76 @@
 <?php
-require_once __DIR__ ."/../models/RolModel.php";
+require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
-class RolesController {
+class IdiomasController {
     private $modelo;
 
     public function __construct() {
         $conexion = (new Conexion())->conectar();
-        $this->modelo = new RolModel($conexion);
+        $this->modelo = new IdiomaModel($conexion);
     }
 
     public function index(): void {
-        $items = $this->modelo->getRolModels();
-        include __DIR__ ."/../view/roles/index.php";
+        $items = $this->modelo->getIdiomaModels();
+        include __DIR__ ."/../view/idiomas/index.php";
     }
 
     public function new(): void {
-        include __DIR__ ."/../view/roles/new.php";
+        include __DIR__ ."/../view/idiomas/new.php";
     }
 
     public function edit(): void {
         $codigo = $_GET['codigo'] ?? null;
         if (!$codigo) {
-            header("Location: index.php?action=roles");
+            header("Location: index.php?action=idiomas");
             exit();
         }
-        $rol = $this->modelo->getrolById($codigo);
-        if (!$rol) {
-            header("Location: index.php?action=roles");
+        $idioma = $this->modelo->getidiomaById($codigo);
+        if (!$idioma) {
+            header("Location: index.php?action=idiomas");
             exit();
         }
-        include __DIR__ ."/../view/roles/edit.php";
+        include __DIR__ ."/../view/idiomas/edit.php";
     }
 
     public function create(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $exito = $this->modelo->crearrol($_POST);
+            $exito = $this->modelo->crearidioma($_POST);
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al crear.";
-                include __DIR__ ."/../view/roles/new.php";
+                include __DIR__ ."/../view/idiomas/new.php";
                 return;
             }
         }
-        header("Location: index.php?action=roles");
+        header("Location: index.php?action=idiomas");
         exit();
     }
 
     public function update(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $exito = $this->modelo->actualizarrol($_POST);
+            $exito = $this->modelo->actualizaridioma($_POST);
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
-                $rol = $_POST;
-                include __DIR__ ."/../view/roles/edit.php";
+                $idioma = $_POST;
+                include __DIR__ ."/../view/idiomas/edit.php";
                 return;
             }
         }
-        header("Location: index.php?action=roles");
+        header("Location: index.php?action=idiomas");
         exit();
     }
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->eliminarrol($codigo);
-        header("Location: index.php?action=roles");
+        $this->modelo->eliminaridioma($codigo);
+        header("Location: index.php?action=idiomas");
         exit();
     }
 
     public function reactivate(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->reactivarrol($codigo);
-        header("Location: index.php?action=roles");
+        $this->modelo->reactivaridioma($codigo);
+        header("Location: index.php?action=idiomas");
         exit();
     }
 }

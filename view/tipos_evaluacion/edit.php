@@ -4,14 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Crear Rol</title>
+    <title>Editar Tipo_evaluacion</title>
 </head>
 <body class="user-body-bg">
 
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="form-container" style="margin-top: 100px;">
-        <h2 class="form-title">Crear Rol</h2>
+        <h2 class="form-title">Editar Tipo_evaluacion</h2>
         
         <?php if (isset($error)): ?>
             <div class="alert-error">
@@ -19,21 +19,15 @@
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=rol_create" method="POST" class="user-form">
+        <form action="index.php?action=tipo_evaluacion_update" method="POST" class="user-form">
+            <input type="hidden" name="id_tipo_evaluacion" value="<?php echo htmlspecialchars($tipo_evaluacion['id_tipo_evaluacion']); ?>">
             <div class="form-col">
                 <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" name="nombre" required>
-            </div>
-            <div class="form-col">
-                <label for="estado">Estado:</label>
-                <select id="estado" name="estado">
-                    <option value="1">Activo</option>
-                    <option value="0">Inactivo</option>
-                </select>
+                <input type="text" id="nombre" name="nombre" value="<?php echo htmlspecialchars($tipo_evaluacion['nombre']); ?>" required>
             </div>
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=roles">Cancelar</a>
-                <button class="btn btn-submit" type="submit">Guardar</button>
+                <a class="btn btn-cancel" href="index.php?action=tipos_evaluacion">Cancelar</a>
+                <button class="btn btn-update" type="submit">Actualizar</button>
             </div>
         </form>
     </div>

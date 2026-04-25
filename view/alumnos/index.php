@@ -4,17 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Roles</title>
+    <title>Alumnos</title>
 </head>
 <body>
 
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="mainContainer user-management-container" style="margin-top: 100px;">
-        <h2 class="user-management-title">Gestión de Roles</h2>
+        <h2 class="user-management-title">Gestión de Alumnos</h2>
         
         <div class="actions-bar">
-            <a class="btn btn-create-user" href="index.php?action=rol_new">+ Crear nuevo</a>
+            <a class="btn btn-create-user" href="index.php?action=alumno_new">+ Crear nuevo</a>
         </div>
         
         <div class="table-responsive">
@@ -22,8 +22,9 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
+                        <th>Username</th>
+                        <th>Nombre Completo</th>
+                        <th>Cursos Inscritos</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -31,28 +32,27 @@
                     <?php if (!empty($items)): ?>
                         <?php foreach ($items as $item): ?>
                             <tr class="element-user">
-                                <td><?php echo htmlspecialchars($item['id_rol']); ?></td>
-                                <td><?php echo htmlspecialchars($item['nombre']); ?></td>
+                                <td><?php echo htmlspecialchars($item['id_alumno']); ?></td>
+                                <td><span class="user-chip user-chip-admin"><?php echo htmlspecialchars($item['username']); ?></span></td>
+                                <td><?php echo htmlspecialchars($item['nombres'] . ' ' . $item['apellidos']); ?></td>
                                 <td>
-                                    <?php if ($item['estado'] == 1): ?>
-                                        <span class="badge-active">Activo</span>
-                                    <?php else: ?>
-                                        <span class="badge-inactive">Inactivo</span>
-                                    <?php endif; ?>
+                                    <?php 
+                                        if (!empty($item['cursos_inscritos'])) {
+                                            $cursos = explode(', ', $item['cursos_inscritos']);
+                                            foreach($cursos as $curso) {
+                                                echo '<span class="user-chip user-chip-student" style="margin-right:4px;">' . htmlspecialchars($curso) . '</span>';
+                                            }
+                                        } else {
+                                            echo '<span style="color:#999; font-style:italic;">Ninguno</span>';
+                                        }
+                                    ?>
                                 </td>
                                 <td>
-                                    <?php if ($item['estado'] == 1): ?>
-                                        <a class="btn btn-edit-sm" href="index.php?action=rol_edit&codigo=<?php echo urlencode($item['id_rol']); ?>">Editar</a>
-                                        <form target="fakeFrame" action="index.php?action=rol_delete" method="POST" style="display:inline;">
-                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_rol']); ?>">
-                                            <button class="btn btn-delete-sm" type="submit" onclick="return confirmacionEliminar();">Eliminar</button>
-                                        </form>
-                                    <?php else: ?>
-                                        <form target="fakeFrame" action="index.php?action=rol_reactivate" method="POST" style="display:inline;">
-                                            <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_rol']); ?>">
-                                            <button class="btn btn-reactivate-sm" type="submit" onclick="return confirmacionReactivar();">Reactivar</button>
-                                        </form>
-                                    <?php endif; ?>
+                                    <a class="btn btn-edit-sm" href="index.php?action=alumno_edit&codigo=<?php echo urlencode($item['id_alumno']); ?>">Editar</a>
+                                    <form target="fakeFrame" action="index.php?action=alumno_delete" method="POST" style="display:inline;">
+                                        <input type="hidden" name="codigo" value="<?php echo htmlspecialchars($item['id_alumno']); ?>">
+                                        <button class="btn btn-delete-sm" type="submit" onclick="return confirmacionEliminar();">Eliminar</button>
+                                    </form>
                                     <iframe name="fakeFrame" class="fakeFrame" style="display:none;"></iframe>
                                 </td>
                             </tr>

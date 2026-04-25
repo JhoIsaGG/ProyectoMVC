@@ -7,26 +7,7 @@
     <title>Editar Usuario</title>
 </head>
 <body class="user-body-bg">
-    <header>
-        <nav>
-            <div class="logo">Academia de Idiomas</div>
-            <ul class="nav-links">
-                <li><a href="index.php?action=home">Inicio</a></li>
-                <li><a href="index.php?action=cursos">Cursos</a></li>
-                <li><a href="index.php?action=evaluaciones">Evaluaciones</a></li>
-                <li><a href="index.php?action=idiomas">Idiomas</a></li>
-                <li><a href="index.php?action=inscripciones">Inscripciones</a></li>
-                <li><a href="index.php?action=niveles">Niveles</a></li>
-                <li><a href="index.php?action=profesores">Profesores</a></li>
-                <li><a href="index.php?action=usuarios">Usuarios</a></li>
-                <li><a href="index.php?action=roles">Roles</a></li>
-                <li><a href="index.php?action=tipos_evaluacion">Tipos</a></li>
-            </ul>
-            <?php if (isset($_SESSION['usuario'])): ?>
-                <a href="index.php?action=logout" class="btn">Cerrar Sesión</a>
-            <?php endif; ?>
-        </nav>
-    </header>
+    <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="form-container" style="margin-top: 100px;">
         <h2 class="form-title">Editar usuario</h2>
@@ -87,10 +68,10 @@
             <div class="form-row">
                 <div class="form-col">
                     <label for="id_rol">Rol:</label>
-                    <select id="id_rol" name="id_rol" required>
+                    <select id="id_rol" name="id_rol" required onchange="toggleIdiomas()">
                         <?php if (!empty($roles)): ?>
                             <?php foreach($roles as $rol): ?>
-                                <option value="<?php echo htmlspecialchars($rol['id_rol']); ?>" <?php echo ($usuario['id_rol'] == $rol['id_rol']) ? 'selected' : ''; ?>>
+                                <option value="<?php echo htmlspecialchars($rol['id_rol']); ?>" data-nombre="<?php echo strtolower(htmlspecialchars($rol['nombre'])); ?>" <?php echo ($usuario['id_rol'] == $rol['id_rol']) ? 'selected' : ''; ?>>
                                     <?php echo htmlspecialchars($rol['nombre']); ?>
                                 </option>
                             <?php endforeach; ?>
@@ -106,6 +87,20 @@
                 </div>
             </div>
 
+            <div id="seccion_idiomas" style="display: none; margin-top: 15px;">
+                <label>Idiomas (solo para profesores):</label>
+                <div class="checkbox-group" style="display:flex; flex-wrap:wrap; gap:10px;">
+                    <?php if (!empty($idiomas)): ?>
+                        <?php foreach($idiomas as $idioma): ?>
+                            <label style="display:flex; align-items:center; gap:5px; font-weight:normal;">
+                                <input type="checkbox" name="id_idiomas[]" value="<?php echo htmlspecialchars($idioma['id_idioma']); ?>" <?php echo (isset($idiomasSeleccionados) && in_array($idioma['id_idioma'], $idiomasSeleccionados)) ? 'checked' : ''; ?>>
+                                <?php echo htmlspecialchars($idioma['nombre']); ?>
+                            </label>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+
             <div class="form-actions">
                 <a class="btn btn-cancel" href="index.php?action=usuarios">Cancelar</a>
                 <button class="btn btn-update" type="submit">Actualizar usuario</button>
@@ -113,5 +108,24 @@
 
         </form>
     </div>
+
+    <script>
+        function toggleIdiomas() {
+            var select = document.getElementById('id_rol');
+            if(!select) return;
+            var selectedOption = select.options[select.selectedIndex];
+            var roleName = selectedOption.getAttribute('data-nombre') || '';
+            var seccionIdiomas = document.getElementById('seccion_idiomas');
+            
+            if (roleName.includes('profesor')) {
+                seccionIdiomas.style.display = 'block';
+            } else {
+                seccionIdiomas.style.display = 'none';
+            }
+        }
+        
+        // Ejecutar al cargar la pagina
+        document.addEventListener("DOMContentLoaded", toggleIdiomas);
+    </script>
 </body>
 </html>

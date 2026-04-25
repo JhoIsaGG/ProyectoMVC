@@ -4,49 +4,67 @@ session_start();
 
 require "config/env.php";
 require "Router.php";
+
 require "controller/UsuariosController.php";
 require "controller/RolesController.php";
+require "controller/IdiomasController.php";
 require "controller/NivelesController.php";
+require "controller/TiposEvaluacionController.php";
+require "controller/AlumnosController.php";
+require "controller/ProfesoresController.php";
+require "controller/CursosController.php";
+require "controller/InscripcionesController.php";
+require "controller/EvaluacionesController.php";
 
 $router = new Router();
+
 $usuariosController = new UsuariosController();
 $rolesController = new RolesController();
+$idiomasController = new IdiomasController();
 $nivelesController = new NivelesController();
+$tiposEvaluacionController = new TiposEvaluacionController();
+$alumnosController = new AlumnosController();
+$profesoresController = new ProfesoresController();
+$cursosController = new CursosController();
+$inscripcionesController = new InscripcionesController();
+$evaluacionesController = new EvaluacionesController();
 
+$controllers = [
+    'usuario' => [$usuariosController, 'usuarios'],
+    'rol' => [$rolesController, 'roles'],
+    'idioma' => [$idiomasController, 'idiomas'],
+    'nivel' => [$nivelesController, 'niveles'],
+    'tipo_evaluacion' => [$tiposEvaluacionController, 'tipos_evaluacion'],
+    'alumno' => [$alumnosController, 'alumnos'],
+    'profesor' => [$profesoresController, 'profesores'],
+    'curso' => [$cursosController, 'cursos'],
+    'inscripcion' => [$inscripcionesController, 'inscripciones'],
+    'evaluacion' => [$evaluacionesController, 'evaluaciones'],
+];
 
-// ruta para usuarios
 $router->add('usuario_login', [$usuariosController, 'login']);
 $router->add('logout', [$usuariosController, 'logout']);
-$router->add('usuarios', [$usuariosController, 'index']);
-$router->add('usuario_new', [$usuariosController, 'new']);
-$router->add('usuario_create', [$usuariosController, 'create']);
-$router->add('usuario_edit', [$usuariosController, 'edit']);
-$router->add('usuario_update', [$usuariosController, 'update']);
-$router->add('usuario_delete', [$usuariosController, 'delete']);
-$router->add('usuario_reactivate', [$usuariosController, 'reactivate']);
 $router->add('usuario_search', [$usuariosController, 'search']);
 
-
-// ruta para roles
-$router->add('roles', [$rolesController, 'index']);
-$router->add('rol_new', [$rolesController, 'new']);
-$router->add('rol_create', [$rolesController, 'create']);
-$router->add('rol_edit', [$rolesController, 'edit']);
-$router->add('rol_update', [$rolesController, 'update']);
-$router->add('rol_delete', [$rolesController, 'delete']);
-
-// ruta para niveles
-$router->add('niveles', [$nivelesController, 'index']);
-$router->add('nivel_new', [$nivelesController, 'new']);
-$router->add('nivel_create', [$nivelesController, 'create']);
-$router->add('nivel_edit', [$nivelesController, 'edit']);
-$router->add('nivel_update', [$nivelesController, 'update']);
-$router->add('nivel_delete', [$nivelesController, 'delete']);
+foreach ($controllers as $singular => $data) {
+    $controllerObj = $data[0];
+    $plural = $data[1];
+    
+    $router->add($plural, [$controllerObj, 'index']);
+    $router->add("{$singular}_new", [$controllerObj, 'new']);
+    $router->add("{$singular}_create", [$controllerObj, 'create']);
+    $router->add("{$singular}_edit", [$controllerObj, 'edit']);
+    $router->add("{$singular}_update", [$controllerObj, 'update']);
+    $router->add("{$singular}_delete", [$controllerObj, 'delete']);
+    if (method_exists($controllerObj, 'reactivate')) {
+        $router->add("{$singular}_reactivate", [$controllerObj, 'reactivate']);
+    }
+}
 
 $router->add("index", function() {
     require "view/index.php";
 });
-
+    
 $router->add("login", function() {
     require "view/login.php";
 });

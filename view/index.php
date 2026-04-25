@@ -6,11 +6,7 @@
     <title>Academia de Idiomas</title>
     <link rel="stylesheet" href="./assets/css/styles.css"></head>
 <body>
-    <header>
-        <nav>
-            <div class="logo">Academia de Idiomas</div>
-        </nav>
-    </header>
+    <?php include __DIR__ . '/navbar.php'; ?>
 
     <main>
         <section class="hero">

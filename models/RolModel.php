@@ -1,110 +1,80 @@
 <?php
-
 class RolModel {
     private $conexion;
 
-    public function __construct($p_conexion) {
-        $this->conexion = $p_conexion;
+    public function __construct($conexion) {
+        $this->conexion = $conexion;
     }
 
-    public function getRoles(): array {
-        $sql = "SELECT *
-                FROM roles
-                WHERE estado = 1";
-
-        $resultado = $this->conexion->query($sql);
-
-        // Verificar si la consulta falló
-        if (!$resultado) {
-            die("Error en la consulta: " . $this->conexion->error);
-        }
-
-        $roles = [];
-
-        while ($fila = $resultado->fetch_assoc()) {
-            $roles[] = $fila;
-        }
-
-        return $roles;
-    }
-
-    /**
-     * @return: devuelve un rol
-     * @param string $codigo: el codigo del rol a buscar
-     */
-
-    public function getRol(string $id): ?array {
-        $sql = "SELECT *
-                FROM roles
-                WHERE id_rol = ? and estado = 1";
-
+    public function getRolModels(): array {
+        $sql = "SELECT * FROM roles ORDER BY id_rol DESC";
         $stmt = $this->conexion->prepare($sql);
-        
-        if(!$stmt) {
-            return null; // Error al preparar la consulta
-        }
-        
-        $stmt->bind_param("s", $id);
         $stmt->execute();
-        $resultado = $stmt->get_result();
-        $rol = $resultado->fetch_assoc() ?: null;
-
-        if ($resultado->num_rows === 0) {
-            return null;
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
         }
-
-        return $rol;
+        return $items;
     }
 
+    public function getrolById(int $id): ?array {
+        $sql = "SELECT * FROM roles WHERE id_rol = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
+    }
 
-    public function crearRol(array $datos): bool {
+    public function crearrol(array $datos): bool|string {
         $sql = "INSERT INTO roles (nombre, estado) VALUES (?, ?)";
         $stmt = $this->conexion->prepare($sql);
-        if (!$stmt) {
-            return false; // Error al preparar la consulta
-        }
-        $estado = 1; 
-        $stmt->bind_param("si", $datos['nombre'], $estado);
-        $stmt->execute();
-        return true;
-    }
-
-        public function actualizarRol(array $datos): bool {
-        $sql = "UPDATE roles 
-                SET nombres = ?, 
-                    estado = ?
-                WHERE id_rol = ?";
-
-        $stmt = $this->conexion->prepare($sql);
-
-        if (!$stmt) {
+        if (!$stmt) return false;
+        
+        $datos['estado'] = 1;
+        
+        $stmt->bind_param("si", $datos['nombre'], $datos['estado']);
+        
+        try {
+            $stmt->execute();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) return "Registro duplicado.";
             return false;
         }
+    }
 
-        $stmt->bind_param(
-            "ssssiii",
-            $datos['nombres'],
-            $datos['estado']
-        );
+    public function actualizarrol(array $datos): bool|string {
+        $sql = "UPDATE roles SET nombre = ?, estado = ? WHERE id_rol = ?";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return false;
+        
+        $stmt->bind_param("sii", $datos['nombre'], $datos['estado'], $datos['id_rol']);
+        
+        try {
+            $stmt->execute();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) return "Registro duplicado.";
+            return false;
+        }
+    }
 
+    public function eliminarrol(int $id): bool {
+        $sql = "UPDATE roles SET estado = 0 WHERE id_rol = ?";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return false;
+        $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
-
-    public function eliminarRol(int $id): bool {
-        // Mejor usar borrado lógico
-        $sql = "UPDATE roles 
-                SET estado = 0 
-                WHERE id_rol = ?";
-
+    public function reactivarrol(int $id): bool {
+        $sql = "UPDATE roles SET estado = 1 WHERE id_rol = ?";
         $stmt = $this->conexion->prepare($sql);
-
-        if (!$stmt) {
-            return false;
-        }
-
+        if (!$stmt) return false;
         $stmt->bind_param("i", $id);
-
         return $stmt->execute();
     }
 }
+?>

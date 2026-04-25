@@ -1,13 +1,13 @@
 <?php
-class NivelModel {
+class IdiomaModel {
     private $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    public function getNivelModels(): array {
-        $sql = "SELECT * FROM niveles ORDER BY id_nivel DESC";
+    public function getIdiomaModels(): array {
+        $sql = "SELECT * FROM idiomas ORDER BY id_idioma DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -18,8 +18,8 @@ class NivelModel {
         return $items;
     }
 
-    public function getnivelById(int $id): ?array {
-        $sql = "SELECT * FROM niveles WHERE id_nivel = ?";
+    public function getidiomaById(int $id): ?array {
+        $sql = "SELECT * FROM idiomas WHERE id_idioma = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -27,14 +27,14 @@ class NivelModel {
         return $result->fetch_assoc() ?: null;
     }
 
-    public function crearnivel(array $datos): bool|string {
-        $sql = "INSERT INTO niveles (nombre, descripcion, estado) VALUES (?, ?, ?)";
+    public function crearidioma(array $datos): bool|string {
+        $sql = "INSERT INTO idiomas (nombre, estado) VALUES (?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
         $datos['estado'] = 1;
         
-        $stmt->bind_param("ssi", $datos['nombre'], $datos['descripcion'], $datos['estado']);
+        $stmt->bind_param("si", $datos['nombre'], $datos['estado']);
         
         try {
             $stmt->execute();
@@ -45,12 +45,12 @@ class NivelModel {
         }
     }
 
-    public function actualizarnivel(array $datos): bool|string {
-        $sql = "UPDATE niveles SET nombre = ?, descripcion = ?, estado = ? WHERE id_nivel = ?";
+    public function actualizaridioma(array $datos): bool|string {
+        $sql = "UPDATE idiomas SET nombre = ?, estado = ? WHERE id_idioma = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("ssii", $datos['nombre'], $datos['descripcion'], $datos['estado'], $datos['id_nivel']);
+        $stmt->bind_param("sii", $datos['nombre'], $datos['estado'], $datos['id_idioma']);
         
         try {
             $stmt->execute();
@@ -61,16 +61,16 @@ class NivelModel {
         }
     }
 
-    public function eliminarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 0 WHERE id_nivel = ?";
+    public function eliminaridioma(int $id): bool {
+        $sql = "UPDATE idiomas SET estado = 0 WHERE id_idioma = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
-    public function reactivarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 1 WHERE id_nivel = ?";
+    public function reactivaridioma(int $id): bool {
+        $sql = "UPDATE idiomas SET estado = 1 WHERE id_idioma = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);

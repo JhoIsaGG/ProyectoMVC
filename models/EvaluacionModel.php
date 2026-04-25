@@ -1,13 +1,13 @@
 <?php
-class NivelModel {
+class EvaluacionModel {
     private $conexion;
 
     public function __construct($conexion) {
         $this->conexion = $conexion;
     }
 
-    public function getNivelModels(): array {
-        $sql = "SELECT * FROM niveles ORDER BY id_nivel DESC";
+    public function getEvaluacionModels(): array {
+        $sql = "SELECT * FROM evaluaciones ORDER BY id_evaluacion DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -18,8 +18,8 @@ class NivelModel {
         return $items;
     }
 
-    public function getnivelById(int $id): ?array {
-        $sql = "SELECT * FROM niveles WHERE id_nivel = ?";
+    public function getevaluacionById(int $id): ?array {
+        $sql = "SELECT * FROM evaluaciones WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();
@@ -27,14 +27,14 @@ class NivelModel {
         return $result->fetch_assoc() ?: null;
     }
 
-    public function crearnivel(array $datos): bool|string {
-        $sql = "INSERT INTO niveles (nombre, descripcion, estado) VALUES (?, ?, ?)";
+    public function crearevaluacion(array $datos): bool|string {
+        $sql = "INSERT INTO evaluaciones (id_inscripcion, nota, id_tipo_evaluacion, fecha_publicacion, fecha_entrega, observaciones, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
         $datos['estado'] = 1;
         
-        $stmt->bind_param("ssi", $datos['nombre'], $datos['descripcion'], $datos['estado']);
+        $stmt->bind_param("idisssi", $datos['id_inscripcion'], $datos['nota'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado']);
         
         try {
             $stmt->execute();
@@ -45,12 +45,12 @@ class NivelModel {
         }
     }
 
-    public function actualizarnivel(array $datos): bool|string {
-        $sql = "UPDATE niveles SET nombre = ?, descripcion = ?, estado = ? WHERE id_nivel = ?";
+    public function actualizarevaluacion(array $datos): bool|string {
+        $sql = "UPDATE evaluaciones SET id_inscripcion = ?, nota = ?, id_tipo_evaluacion = ?, fecha_publicacion = ?, fecha_entrega = ?, observaciones = ?, estado = ? WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("ssii", $datos['nombre'], $datos['descripcion'], $datos['estado'], $datos['id_nivel']);
+        $stmt->bind_param("idisssii", $datos['id_inscripcion'], $datos['nota'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado'], $datos['id_evaluacion']);
         
         try {
             $stmt->execute();
@@ -61,16 +61,16 @@ class NivelModel {
         }
     }
 
-    public function eliminarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 0 WHERE id_nivel = ?";
+    public function eliminarevaluacion(int $id): bool {
+        $sql = "UPDATE evaluaciones SET estado = 0 WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
-    public function reactivarnivel(int $id): bool {
-        $sql = "UPDATE niveles SET estado = 1 WHERE id_nivel = ?";
+    public function reactivarevaluacion(int $id): bool {
+        $sql = "UPDATE evaluaciones SET estado = 1 WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);

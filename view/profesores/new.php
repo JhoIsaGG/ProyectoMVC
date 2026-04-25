@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Crear Usuario</title>
+    <title>Crear Profesor</title>
 </head>
 <body class="user-body-bg">
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="form-container" style="margin-top: 100px;">
-        <h2 class="form-title">Crear nuevo usuario</h2>
+        <h2 class="form-title">Crear nuevo profesor</h2>
         
         <?php if (isset($error)): ?>
             <div class="alert-error">
@@ -18,8 +18,10 @@
             </div>
         <?php endif; ?>
 
-        <form action="index.php?action=usuario_create" method="POST" class="user-form">
+        <form action="index.php?action=profesor_create" method="POST" class="user-form">
             
+            <input type="hidden" name="id_rol" value="<?php echo htmlspecialchars($id_rol_profesor); ?>">
+
             <div class="form-row">
                 <div class="form-col">
                     <label for="nombres">Nombres:</label>
@@ -63,20 +65,8 @@
                 <textarea id="direccion" name="direccion" required></textarea>
             </div>
 
-            <div>
-                <label for="id_rol">Rol:</label>
-                <select id="id_rol" name="id_rol" required onchange="toggleIdiomas()">
-                    <option value="">Seleccione un rol</option>
-                    <?php if (!empty($roles)): ?>
-                        <?php foreach($roles as $rol): ?>
-                            <option value="<?php echo htmlspecialchars($rol['id_rol']); ?>" data-nombre="<?php echo strtolower(htmlspecialchars($rol['nombre'])); ?>"><?php echo htmlspecialchars($rol['nombre']); ?></option>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                </select>
-            </div>
-
-            <div id="seccion_idiomas" style="display: none; margin-top: 15px;">
-                <label>Idiomas (solo para profesores):</label>
+            <div id="seccion_idiomas" style="margin-top: 15px;">
+                <label>Idiomas que domina:</label>
                 <div class="checkbox-group" style="display:flex; flex-wrap:wrap; gap:10px;">
                     <?php if (!empty($idiomas)): ?>
                         <?php foreach($idiomas as $idioma): ?>
@@ -90,26 +80,11 @@
             </div>
 
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=usuarios">Cancelar</a>
-                <button class="btn btn-submit" type="submit">Crear usuario</button>
+                <a class="btn btn-cancel" href="index.php?action=profesores">Cancelar</a>
+                <button class="btn btn-submit" type="submit">Crear profesor</button>
             </div>
 
         </form>
     </div>
-
-    <script>
-        function toggleIdiomas() {
-            var select = document.getElementById('id_rol');
-            var selectedOption = select.options[select.selectedIndex];
-            var roleName = selectedOption.getAttribute('data-nombre') || '';
-            var seccionIdiomas = document.getElementById('seccion_idiomas');
-            
-            if (roleName.includes('profesor')) {
-                seccionIdiomas.style.display = 'block';
-            } else {
-                seccionIdiomas.style.display = 'none';
-            }
-        }
-    </script>
 </body>
 </html>

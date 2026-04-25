@@ -2,17 +2,20 @@
 
 require_once __DIR__ ."/../models/UsuarioModel.php";
 require_once __DIR__ ."/../models/RolModel.php";
+require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class UsuariosController{
 
 private $modelo;
 private $rolModelo;
+private $idiomaModelo;
 
 public function __construct(){
         $conexion = (new Conexion())->conectar();
         $this->modelo = new UsuarioModel($conexion);
         $this->rolModelo = new RolModel($conexion);
+        $this->idiomaModelo = new IdiomaModel($conexion);
 }
 
 
@@ -68,7 +71,8 @@ public function index():void{
  * NEW
  */
 public function new():void{
-    $roles = $this->rolModelo->getRoles();
+    $roles = $this->rolModelo->getRolModels();
+    $idiomas = $this->idiomaModelo->getIdiomaModels();
     include __DIR__ ."/../view/usuarios/new.php";
 }
 
@@ -90,7 +94,25 @@ public function edit():void{
         header("Location: index.php?action=usuarios");
         exit();
     }
-    $roles = $this->rolModelo->getRoles();
+    $roles = $this->rolModelo->getRolModels();
+    $idiomas = $this->idiomaModelo->getIdiomaModels();
+    
+    // Obtener idiomas del profesor si es profesor
+    $idiomasSeleccionados = [];
+    $rol = $this->rolModelo->getrolById($usuario['id_rol']);
+    if ($rol && strpos(strtolower($rol['nombre']), 'profesor') !== false) {
+        require_once __DIR__ . "/../models/ProfesorModel.php";
+        $profesorModel = new ProfesorModel((new Conexion())->conectar());
+        // Buscar el id_profesor asociado a este id_usuario
+        $profesores = $profesorModel->getProfesorModels();
+        foreach ($profesores as $p) {
+            if ($p['id_usuario'] == $usuario['id_usuario']) {
+                $idiomasSeleccionados = $profesorModel->getIdiomasByProfesor($p['id_profesor']);
+                break;
+            }
+        }
+    }
+    
     include __DIR__ ."/../view/usuarios/edit.php";
 }
 
@@ -101,11 +123,49 @@ public function edit():void{
 public function create():void{
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $exito = $this->modelo->crearUsuario($_POST);
-        if ($exito !== true) {
+        
+        if ($exito === false || is_string($exito)) {
             $error = is_string($exito) ? $exito : "Error al crear el usuario.";
-            $roles = $this->rolModelo->getRoles();
+            $roles = $this->rolModelo->getRolModels();
+            $idiomas = $this->idiomaModelo->getIdiomaModels();
             include __DIR__ ."/../view/usuarios/new.php";
             return;
+        }
+
+        // $exito ahora contiene el ID del usuario insertado
+        $id_usuario = $exito;
+        $id_rol = $_POST['id_rol'] ?? null;
+        $id_idiomas_post = $_POST['id_idiomas'] ?? [];
+
+        if ($id_rol) {
+            $rol = $this->rolModelo->getrolById($id_rol);
+            if ($rol) {
+                $nombre_rol = strtolower($rol['nombre']);
+                
+                if (strpos($nombre_rol, 'profesor') !== false) {
+                    require_once __DIR__ . "/../models/ProfesorModel.php";
+                    $profesorModel = new ProfesorModel((new Conexion())->conectar());
+                    $profesorModel->crearprofesor(['id_usuario' => $id_usuario]);
+                    
+                    // Buscar el id_profesor recien creado para vincular idiomas
+                    $profesores = $profesorModel->getProfesorModels();
+                    $id_profesor = null;
+                    foreach ($profesores as $p) {
+                        if ($p['id_usuario'] == $id_usuario) {
+                            $id_profesor = $p['id_profesor'];
+                            break;
+                        }
+                    }
+                    if ($id_profesor) {
+                        $profesorModel->vincularIdiomas($id_profesor, $id_idiomas_post);
+                    }
+                    
+                } else if (strpos($nombre_rol, 'alumno') !== false || strpos($nombre_rol, 'estudiante') !== false) {
+                    require_once __DIR__ . "/../models/AlumnoModel.php";
+                    $alumnoModel = new AlumnoModel((new Conexion())->conectar());
+                    $alumnoModel->crearalumno(['id_usuario' => $id_usuario]);
+                }
+            }
         }
     }
     header("Location: index.php?action=usuarios");
@@ -123,10 +183,36 @@ public function update():void{
             if (!empty($_POST['password']) && !empty($_POST['id_usuario'])) {
                 $this->modelo->actualizarPassword((int)$_POST['id_usuario'], $_POST['password']);
             }
+            
+            // Actualizar idiomas si es profesor
+            $id_rol = $_POST['id_rol'] ?? null;
+            $id_idiomas_post = $_POST['id_idiomas'] ?? [];
+            if ($id_rol) {
+                $rol = $this->rolModelo->getrolById($id_rol);
+                if ($rol && strpos(strtolower($rol['nombre']), 'profesor') !== false) {
+                    require_once __DIR__ . "/../models/ProfesorModel.php";
+                    $profesorModel = new ProfesorModel((new Conexion())->conectar());
+                    
+                    $profesores = $profesorModel->getProfesorModels();
+                    $id_profesor = null;
+                    foreach ($profesores as $p) {
+                        if ($p['id_usuario'] == $_POST['id_usuario']) {
+                            $id_profesor = $p['id_profesor'];
+                            break;
+                        }
+                    }
+                    if ($id_profesor) {
+                        $profesorModel->vincularIdiomas($id_profesor, $id_idiomas_post);
+                    }
+                }
+            }
+            
         } else {
             $error = is_string($exito) ? $exito : "Error al actualizar el usuario.";
             $usuario = $_POST;
-            $roles = $this->rolModelo->getRoles();
+            $roles = $this->rolModelo->getRolModels();
+            $idiomas = $this->idiomaModelo->getIdiomaModels();
+            // TODO: cargar idiomasSeleccionados aqui de ser necesario
             include __DIR__ ."/../view/usuarios/edit.php";
             return;
         }
