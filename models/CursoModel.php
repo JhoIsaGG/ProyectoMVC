@@ -7,8 +7,76 @@ class CursoModel {
     }
 
     public function getCursoModels(): array {
-        $sql = "SELECT * FROM cursos ORDER BY id_curso DESC";
+        $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel,
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor
+                FROM cursos c
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                JOIN profesores p ON c.id_profesor = p.id_profesor
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                ORDER BY c.id_curso DESC";
         $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
+    public function getCursosActivos(): array {
+        $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel,
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor
+                FROM cursos c
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                JOIN profesores p ON c.id_profesor = p.id_profesor
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                WHERE c.estado = 1
+                ORDER BY c.id_curso DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
+    public function getCursosByProfesor(int $id_profesor): array {
+        $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel
+                FROM cursos c
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                WHERE c.id_profesor = ? AND c.estado = 1
+                ORDER BY c.id_curso DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_profesor);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
+    public function getCursosByAlumno(int $id_alumno): array {
+        $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel,
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor,
+                       ins.id_inscripcion
+                FROM inscripciones ins
+                JOIN cursos c ON ins.id_curso = c.id_curso
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                JOIN profesores p ON c.id_profesor = p.id_profesor
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                WHERE ins.id_alumno = ?
+                ORDER BY c.id_curso DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_alumno);
         $stmt->execute();
         $result = $stmt->get_result();
         $items = [];

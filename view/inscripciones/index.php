@@ -22,8 +22,8 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Id_alumno</th>
-                        <th>Id_curso</th>
+                        <th>Alumno</th>
+                        <th>Curso</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>
@@ -32,8 +32,8 @@
                         <?php foreach ($items as $item): ?>
                             <tr class="element-user">
                                 <td><?php echo htmlspecialchars($item['id_inscripcion']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_alumno']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_curso']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_alumno']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_curso']); ?></td>
                                 <td>
                                     <a class="btn btn-edit-sm" href="index.php?action=inscripcion_edit&codigo=<?php echo urlencode($item['id_inscripcion']); ?>">Editar</a>
                                     <form target="fakeFrame" action="index.php?action=inscripcion_delete" method="POST" style="display:inline;">

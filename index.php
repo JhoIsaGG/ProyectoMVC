@@ -4,7 +4,6 @@ session_start();
 
 require "config/env.php";
 require "Router.php";
-
 require "controller/UsuariosController.php";
 require "controller/RolesController.php";
 require "controller/IdiomasController.php";
@@ -45,6 +44,7 @@ $controllers = [
 $router->add('usuario_login', [$usuariosController, 'login']);
 $router->add('logout', [$usuariosController, 'logout']);
 $router->add('usuario_search', [$usuariosController, 'search']);
+$router->add('curso_detalle', [$evaluacionesController, 'detalle']);
 
 foreach ($controllers as $singular => $data) {
     $controllerObj = $data[0];
@@ -64,14 +64,18 @@ foreach ($controllers as $singular => $data) {
 $router->add("index", function() {
     require "view/index.php";
 });
-    
+
 $router->add("login", function() {
     require "view/login.php";
 });
 
-$router->add("home", function() {
-    require "view/home.php";
-});
+if(isset($_SESSION['usuario']) && $_SESSION['usuario']['id_rol'] == 1){
+    $router->add("home", [$usuariosController, 'home_admin']);
+}else if(isset($_SESSION['usuario']) && $_SESSION['usuario']['id_rol'] == 2){
+    $router->add("home", [$usuariosController, 'home_profesor']);
+}else if(isset($_SESSION['usuario']) && $_SESSION['usuario']['id_rol'] == 3){
+    $router->add("home", [$usuariosController, 'home_alumno']);
+}
 
 $routeDefault = empty($_SESSION['usuario']) ? 'index' : 'home';
 

@@ -23,13 +23,13 @@
                     <tr>
                         <th>ID</th>
                         <th>Nombre</th>
-                        <th>Id_idioma</th>
-                        <th>Id_nivel</th>
-                        <th>Id_profesor</th>
-                        <th>Fecha_inicio</th>
-                        <th>Fecha_fin</th>
+                        <th>Idioma</th>
+                        <th>Nivel</th>
+                        <th>Profesor</th>
+                        <th>Fecha Inicio</th>
+                        <th>Fecha Fin</th>
                         <th>Horario</th>
-                        <th>Cupo_maximo</th>
+                        <th>Cupo</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -40,9 +40,9 @@
                             <tr class="element-user">
                                 <td><?php echo htmlspecialchars($item['id_curso']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_idioma']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_nivel']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_profesor']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_idioma']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_nivel']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_profesor']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_inicio']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_fin']); ?></td>
                                 <td><?php echo htmlspecialchars($item['horario']); ?></td>

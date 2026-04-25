@@ -22,12 +22,12 @@
         <form action="index.php?action=inscripcion_update" method="POST" class="user-form">
             <input type="hidden" name="id_inscripcion" value="<?php echo htmlspecialchars($inscripcion['id_inscripcion']); ?>">
             <div class="form-col">
-                <label for="id_alumno">Alumno (ID):</label>
+                <label for="id_alumno">Alumno:</label>
                 <select id="id_alumno" name="id_alumno" required>
                     <option value="">Seleccione un alumno...</option>
                     <?php foreach ($alumnos as $alumno): ?>
                         <option value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>" <?php echo ($inscripcion['id_alumno'] == $alumno['id_alumno']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($alumno['id_alumno']); ?>
+                            <?php echo htmlspecialchars($alumno['id_alumno'] . ' - ' . $alumno['nombres'] . ' ' . $alumno['apellidos']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

@@ -48,12 +48,12 @@
                 </select>
             </div>
             <div class="form-col">
-                <label for="id_profesor">Profesor (ID):</label>
+                <label for="id_profesor">Profesor:</label>
                 <select id="id_profesor" name="id_profesor" required>
                     <option value="">Seleccione un profesor...</option>
                     <?php foreach ($profesores as $prof): ?>
                         <option value="<?php echo htmlspecialchars($prof['id_profesor']); ?>" <?php echo ($curso['id_profesor'] == $prof['id_profesor']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($prof['id_profesor']); ?>
+                            <?php echo htmlspecialchars($prof['id_profesor'] . ' - ' . $prof['nombres'] . ' ' . $prof['apellidos']); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

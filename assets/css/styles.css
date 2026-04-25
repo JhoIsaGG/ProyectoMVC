@@ -96,6 +96,10 @@ footer {
     text-align: center;
     padding: 20px;
     font-size: 14px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
 }
 
 @media (max-width: 900px) {
@@ -288,7 +292,7 @@ iframe {
 .user-management-title {
     margin-bottom: 25px;
     font-size: 28px;
-    color: #2a5298;
+    color: #e1e5ec;
     border-bottom: 2px solid #f1f3f5;
     padding-bottom: 15px;
 }
@@ -585,4 +589,94 @@ iframe {
     border-left: 5px solid #c62828;
     font-weight: 500;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== COURSE CARDS (Home por rol) ===== */
+.courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+    margin-top: 10px;
+}
+
+.course-card {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    padding: 22px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    color: white;
+}
+
+.course-card a {
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
+}
+
+.course-card-link {
+    text-decoration: none;
+    cursor: pointer;
+    display: block;
+}
+
+.course-card-header {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.course-lang-badge {
+    background: linear-gradient(135deg, #6c63ff, #4ecdc4);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.course-level-badge {
+    background: rgba(255, 209, 102, 0.25);
+    color: #ffd166;
+    border: 1px solid #ffd166;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.course-card-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.course-card-teacher {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.75);
+    margin-bottom: 14px;
+}
+
+.course-card-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 18px;
 }

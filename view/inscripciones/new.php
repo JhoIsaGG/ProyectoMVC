@@ -21,11 +21,11 @@
 
         <form action="index.php?action=inscripcion_create" method="POST" class="user-form">
             <div class="form-col">
-                <label for="id_alumno">Alumno (ID):</label>
+                <label for="id_alumno">Alumno:</label>
                 <select id="id_alumno" name="id_alumno" required>
                     <option value="">Seleccione un alumno...</option>
                     <?php foreach ($alumnos as $alumno): ?>
-                        <option value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>"><?php echo htmlspecialchars($alumno['id_alumno']); ?></option>
+                        <option value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>"><?php echo htmlspecialchars($alumno['id_alumno'] . ' - ' . $alumno['nombres'] . ' ' . $alumno['apellidos']); ?></option>
                     <?php endforeach; ?>
                 </select>
             </div>

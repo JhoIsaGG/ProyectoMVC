@@ -4,18 +4,21 @@ require_once __DIR__ ."/../models/UsuarioModel.php";
 require_once __DIR__ ."/../models/RolModel.php";
 require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
+require_once __DIR__ ."/../models/CursoModel.php";
 
 class UsuariosController{
 
 private $modelo;
 private $rolModelo;
 private $idiomaModelo;
+private $cursoModelo;
 
 public function __construct(){
         $conexion = (new Conexion())->conectar();
         $this->modelo = new UsuarioModel($conexion);
         $this->rolModelo = new RolModel($conexion);
         $this->idiomaModelo = new IdiomaModel($conexion);
+        $this->cursoModelo = new CursoModel($conexion);
 }
 
 
@@ -66,6 +69,27 @@ public function index():void{
     $usuarios = $this->modelo->getUsuarios();
     include __DIR__ ."/../view/usuarios/index.php";
 }
+
+
+/**
+ * LOS HOMES PARA USUARIOS
+ */
+
+public function home_admin():void{
+    $cursos = $this->cursoModelo->getCursoModels();
+    include __DIR__ ."/../view/home_admin.php";
+}
+
+public function home_profesor():void{
+    $cursos = $this->cursoModelo->getCursoModels();
+    include __DIR__ ."/../view/home_profesor.php";
+}
+
+public function home_alumno():void{
+    $cursos = $this->cursoModelo->getCursoModels();
+    include __DIR__ ."/../view/home_alumno.php";
+}
+
 
 /**
  * NEW
@@ -212,7 +236,6 @@ public function update():void{
             $usuario = $_POST;
             $roles = $this->rolModelo->getRolModels();
             $idiomas = $this->idiomaModelo->getIdiomaModels();
-            // TODO: cargar idiomasSeleccionados aqui de ser necesario
             include __DIR__ ."/../view/usuarios/edit.php";
             return;
         }

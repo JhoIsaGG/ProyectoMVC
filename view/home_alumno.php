@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Cursos — Alumno | Academia de Idiomas</title>
+    <link rel="stylesheet" href="./assets/css/styles.css">
+</head>
+<body>
+    <?php include __DIR__ . '/navbar.php'; ?>
+
+    <main style="margin-top: 100px; padding: 30px;">
+        <div class="mainContainer">
+            <h2 class="user-management-title">Mis Cursos Inscritos</h2>
+            <p style="color:#aaa; margin-bottom:24px;">Hola, <strong><?php echo htmlspecialchars($_SESSION['usuario']['nombres'] ?? 'Alumno'); ?></strong>. Aquí puedes ver los cursos en los que estás inscrito.</p>
+
+            <?php if (!empty($cursos)): ?>
+                <div class="courses-grid">
+                    <?php foreach ($cursos as $curso): ?>
+                        <a class="course-card course-card-link" href="index.php?action=curso_detalle&id_curso=<?php echo urlencode($curso['id_curso']); ?>">
+                            <div class="course-card-header">
+                                <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
+                                <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
+                            </div>
+                            <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
+                            <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
+                            <div class="course-card-meta">
+                                <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
+                                <span>🕐 <?php echo htmlspecialchars($curso['horario']); ?></span>
+                            </div>
+                            <span class="btn btn-edit-sm" style="margin-top:12px;display:inline-block;">Ver Evaluaciones →</span>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+            <?php else: ?>
+                <div class="empty-state">No estás inscrito en ningún curso todavía.</div>
+            <?php endif; ?>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Academia de Idiomas. Todos los derechos reservados.</p>
+    </footer>
+</body>
+</html>

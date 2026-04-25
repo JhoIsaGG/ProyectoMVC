@@ -22,11 +22,11 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Id_curso</th>
+                        <th>Curso</th>
                         <th>Nota</th>
-                        <th>Id_tipo_evaluacion</th>
-                        <th>Fecha_publicacion</th>
-                        <th>Fecha_entrega</th>
+                        <th>Tipo Evaluación</th>
+                        <th>Fecha Publicación</th>
+                        <th>Fecha Entrega</th>
                         <th>Observaciones</th>
                         <th>Estado</th>
                         <th>Acciones</th>
@@ -37,9 +37,9 @@
                         <?php foreach ($items as $item): ?>
                             <tr class="element-user">
                                 <td><?php echo htmlspecialchars($item['id_evaluacion']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_curso']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_curso']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nota']); ?></td>
-                                <td><?php echo htmlspecialchars($item['id_tipo_evaluacion']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_tipo']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_publicacion']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_entrega']); ?></td>
                                 <td><?php echo htmlspecialchars($item['observaciones']); ?></td>

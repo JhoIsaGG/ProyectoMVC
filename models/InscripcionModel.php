@@ -7,7 +7,13 @@ class InscripcionModel {
     }
 
     public function getInscripcionModels(): array {
-        $sql = "SELECT * FROM inscripciones ORDER BY id_inscripcion DESC";
+        $sql = "SELECT i.*, CONCAT(u.nombres, ' ', u.apellidos) AS nombre_alumno,
+                       c.nombre AS nombre_curso
+                FROM inscripciones i
+                JOIN alumnos a ON i.id_alumno = a.id_alumno
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                JOIN cursos c ON i.id_curso = c.id_curso
+                ORDER BY i.id_inscripcion DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();

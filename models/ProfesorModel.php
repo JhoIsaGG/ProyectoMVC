@@ -35,6 +35,16 @@ class ProfesorModel {
         return $result->fetch_assoc() ?: null;
     }
 
+    public function getProfesorByUsuario(int $id_usuario): ?array {
+        $sql = "SELECT * FROM profesores WHERE id_usuario = ? LIMIT 1";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return null;
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
+    }
+
     public function vincularIdiomas(int $id_profesor, array $id_idiomas): bool {
         $sqlDelete = "DELETE FROM profesores_idiomas WHERE id_profesor = ?";
         $stmtDel = $this->conexion->prepare($sqlDelete);

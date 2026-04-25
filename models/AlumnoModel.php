@@ -37,6 +37,16 @@ class AlumnoModel {
         return $result->fetch_assoc() ?: null;
     }
 
+    public function getAlumnoByUsuario(int $id_usuario): ?array {
+        $sql = "SELECT * FROM alumnos WHERE id_usuario = ? LIMIT 1";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return null;
+        $stmt->bind_param("i", $id_usuario);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
+    }
+
     public function crearalumno(array $datos): bool|string {
         $sql = "INSERT INTO alumnos (id_usuario) VALUES (?)";
         $stmt = $this->conexion->prepare($sql);

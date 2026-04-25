@@ -7,8 +7,29 @@ class EvaluacionModel {
     }
 
     public function getEvaluacionModels(): array {
-        $sql = "SELECT * FROM evaluaciones ORDER BY id_evaluacion DESC";
+        $sql = "SELECT e.*, c.nombre AS nombre_curso, te.nombre AS nombre_tipo
+                FROM evaluaciones e
+                JOIN cursos c ON e.id_curso = c.id_curso
+                JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
+                ORDER BY e.id_evaluacion DESC";
         $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
+    public function getEvaluacionesByCurso(int $id_curso): array {
+        $sql = "SELECT e.*, te.nombre AS nombre_tipo
+                FROM evaluaciones e
+                JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
+                WHERE e.id_curso = ? AND e.estado = 1
+                ORDER BY e.id_evaluacion DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_curso);
         $stmt->execute();
         $result = $stmt->get_result();
         $items = [];
