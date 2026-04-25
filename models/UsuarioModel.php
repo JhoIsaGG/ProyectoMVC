@@ -104,24 +104,35 @@ class UsuarioModel {
         return $usuarios;
     }
 
-    public function crearUsuario(array $datos): bool {
-        $sql = "INSERT INTO usuarios (nombres, apellidos, username, password, email, id_rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    public function crearUsuario(array $datos): bool|string {
+        $sql = "INSERT INTO usuarios (nombres, apellidos, username, password, email, telefono, fecha_nacimiento, direccion, id_rol, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) {
             return false; // Error al preparar la consulta
         }
         $estado = 1; 
-        $stmt->bind_param("sssssii", $datos['nombres'], $datos['apellidos'], $datos['username'], $datos['password'], $datos['email'], $datos['id_rol'], $estado);
-        $stmt->execute();
-        return true;
+        $stmt->bind_param("ssssssssii", $datos['nombres'], $datos['apellidos'], $datos['username'], $datos['password'], $datos['email'], $datos['telefono'], $datos['fecha_nacimiento'], $datos['direccion'], $datos['id_rol'], $estado);
+        
+        try {
+            $stmt->execute();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                return "El nombre de usuario o correo ya está en uso.";
+            }
+            return false;
+        }
     }
 
-        public function actualizarUsuario(array $datos): bool {
+    public function actualizarUsuario(array $datos): bool|string {
         $sql = "UPDATE usuarios 
                 SET nombres = ?, 
                     apellidos = ?, 
                     username = ?, 
                     email = ?, 
+                    telefono = ?,
+                    fecha_nacimiento = ?,
+                    direccion = ?,
                     id_rol = ?, 
                     estado = ?
                 WHERE id_usuario = ?";
@@ -133,17 +144,28 @@ class UsuarioModel {
         }
 
         $stmt->bind_param(
-            "ssssiii",
+            "sssssssiii",
             $datos['nombres'],
             $datos['apellidos'],
             $datos['username'],
             $datos['email'],
+            $datos['telefono'],
+            $datos['fecha_nacimiento'],
+            $datos['direccion'],
             $datos['id_rol'],
             $datos['estado'],
             $datos['id_usuario']
         );
 
-        return $stmt->execute();
+        try {
+            $stmt->execute();
+            return true;
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                return "El nombre de usuario o correo ya está en uso.";
+            }
+            return false;
+        }
     }
 
       public function actualizarPassword(int $id_usuario, string $password): bool {
@@ -166,6 +188,22 @@ class UsuarioModel {
         // Mejor usar borrado lógico
         $sql = "UPDATE usuarios 
                 SET estado = 0 
+                WHERE id_usuario = ?";
+
+        $stmt = $this->conexion->prepare($sql);
+
+        if (!$stmt) {
+            return false;
+        }
+
+        $stmt->bind_param("i", $id);
+
+        return $stmt->execute();
+    }
+
+    public function reactivarUsuario(int $id): bool {
+        $sql = "UPDATE usuarios 
+                SET estado = 1 
                 WHERE id_usuario = ?";
 
         $stmt = $this->conexion->prepare($sql);

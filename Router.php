@@ -24,6 +24,12 @@ class Router {
             exit;
         }
 
+        // Si el usuario ya está logueado, no debe poder entrar al index ni al login
+        if (in_array($requestRoute, ['index', 'login', 'usuario_login']) && !empty($_SESSION['usuario'])) {
+            header("Location: index.php?action=home");
+            exit;
+        }
+
         if (isset($this->routes[$requestRoute])) {
             call_user_func($this->routes[$requestRoute]);
             return;

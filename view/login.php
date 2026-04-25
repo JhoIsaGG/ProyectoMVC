@@ -17,7 +17,13 @@
             <h2>Academia de Idiomas</h2>
             <p>Iniciar Sesión</p>
 
-            <form action="index.php?route=usuario_login" method="POST">
+            <?php if (isset($errorLogin)): ?>
+                <div class="error-message" style="color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 5px; margin-bottom: 15px; text-align: center; border: 1px solid #f5c6cb;">
+                    <?= htmlspecialchars($errorLogin) ?>
+                </div>
+            <?php endif; ?>
+
+            <form action="index.php?action=usuario_login" method="POST">
                 <div class="input-group">
                     <label>Usuario</label>
                     <input type="text" name="username" placeholder="Ingrese su usuario" required>

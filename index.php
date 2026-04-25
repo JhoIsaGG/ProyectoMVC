@@ -16,12 +16,14 @@ $nivelesController = new NivelesController();
 
 // ruta para usuarios
 $router->add('usuario_login', [$usuariosController, 'login']);
+$router->add('logout', [$usuariosController, 'logout']);
 $router->add('usuarios', [$usuariosController, 'index']);
 $router->add('usuario_new', [$usuariosController, 'new']);
 $router->add('usuario_create', [$usuariosController, 'create']);
 $router->add('usuario_edit', [$usuariosController, 'edit']);
 $router->add('usuario_update', [$usuariosController, 'update']);
 $router->add('usuario_delete', [$usuariosController, 'delete']);
+$router->add('usuario_reactivate', [$usuariosController, 'reactivate']);
 $router->add('usuario_search', [$usuariosController, 'search']);
 
 

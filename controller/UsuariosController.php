@@ -1,16 +1,18 @@
 <?php
 
 require_once __DIR__ ."/../models/UsuarioModel.php";
+require_once __DIR__ ."/../models/RolModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class UsuariosController{
 
-private $modelo ;
+private $modelo;
+private $rolModelo;
 
 public function __construct(){
-
         $conexion = (new Conexion())->conectar();
         $this->modelo = new UsuarioModel($conexion);
+        $this->rolModelo = new RolModel($conexion);
 }
 
 
@@ -24,18 +26,35 @@ public function login():void{
 
         $usuario = $this->modelo->login($username, $password);
         if ($usuario) {
-            session_start();
-            $_SESSION['usuario'] = $usuario;
+            $_SESSION['usuario'] = [
+                'id_usuario' => $usuario['id_usuario'],
+                'nombres'    => $usuario['nombres'],
+                'apellidos'  => $usuario['apellidos'],
+                'username'   => $usuario['username'],
+                'email'      => $usuario['email'],
+                'id_rol'     => $usuario['id_rol']
+            ];
+            
             header("Location: index.php?action=home");
             exit();
         } else {
-            echo "Credenciales inválidas. Intente nuevamente.";
+            $errorLogin = "Credenciales inválidas. Verifique su usuario y contraseña.";
+            include __DIR__ ."/../view/login.php";
         }
     } else {
         include __DIR__ ."/../view/login.php";
     }
 }
 
+/**
+ * LOGOUT
+ */
+public function logout(): void {
+    session_unset();
+    session_destroy();
+    header("Location: index.php?action=index");
+    exit();
+}
 
 /**
  * INDEX
@@ -49,6 +68,7 @@ public function index():void{
  * NEW
  */
 public function new():void{
+    $roles = $this->rolModelo->getRoles();
     include __DIR__ ."/../view/usuarios/new.php";
 }
 
@@ -70,6 +90,7 @@ public function edit():void{
         header("Location: index.php?action=usuarios");
         exit();
     }
+    $roles = $this->rolModelo->getRoles();
     include __DIR__ ."/../view/usuarios/edit.php";
 }
 
@@ -78,34 +99,40 @@ public function edit():void{
  * CREATE
  */
 public function create():void{
-    $usuario = $this->modelo->crearUsuario($_POST);
-    header("Location: index.php?action=usuarios");
-    exit();
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-        if($usuario){
-            header("Location: index.php?action=usuarios");
-            exit();
-        } else {
-            echo "Error al crear el usuario.";
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $exito = $this->modelo->crearUsuario($_POST);
+        if ($exito !== true) {
+            $error = is_string($exito) ? $exito : "Error al crear el usuario.";
+            $roles = $this->rolModelo->getRoles();
+            include __DIR__ ."/../view/usuarios/new.php";
+            return;
         }
     }
+    header("Location: index.php?action=usuarios");
+    exit();
 }
 
 /**
  * UPDATE
  */
 public function update():void{
-    $usuario = $this->modelo->actualizarUsuario($_POST);
-    header("Location: index.php?action=usuarios");
-    exit();
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){
-        if($usuario){
-            header("Location: index.php?action=usuarios");
-            exit();
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $exito = $this->modelo->actualizarUsuario($_POST);
+        
+        if ($exito === true) {
+            if (!empty($_POST['password']) && !empty($_POST['id_usuario'])) {
+                $this->modelo->actualizarPassword((int)$_POST['id_usuario'], $_POST['password']);
+            }
         } else {
-            echo "Error al actualizar el usuario.";
+            $error = is_string($exito) ? $exito : "Error al actualizar el usuario.";
+            $usuario = $_POST;
+            $roles = $this->rolModelo->getRoles();
+            include __DIR__ ."/../view/usuarios/edit.php";
+            return;
         }
     }
+    header("Location: index.php?action=usuarios");
+    exit();
 }
 
 
@@ -119,4 +146,16 @@ public function delete():void{
     header("Location: index.php?action=usuarios");
     exit();
 }
+
+
+/**
+ * REACTIVATE
+ */
+public function reactivate(): void {
+        $codigo = $_POST['codigo'] ?? null;
+        $this->modelo->reactivarUsuario($codigo);
+        
+        header("Location: index.php?action=usuarios");
+        exit();
+    }
 }
