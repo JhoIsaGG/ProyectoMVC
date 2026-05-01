@@ -74,7 +74,6 @@ CREATE TABLE cursos (
     id_profesor INT NOT NULL,
     fecha_inicio DATE,
     fecha_fin DATE,
-    horario VARCHAR(100),
     cupo_maximo INT,
     estado BOOLEAN,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -106,7 +105,7 @@ CREATE TABLE tipos_evaluacion (
 CREATE TABLE evaluaciones (
     id_evaluacion INT AUTO_INCREMENT PRIMARY KEY,
     id_curso INT NOT NULL,
-    nota DECIMAL(5,2),
+    punteo DECIMAL(5,2),
     id_tipo_evaluacion INT NOT NULL,
     fecha_publicacion DATE,
     fecha_entrega DATE,
@@ -116,4 +115,55 @@ CREATE TABLE evaluaciones (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
     FOREIGN KEY (id_tipo_evaluacion) REFERENCES tipos_evaluacion(id_tipo_evaluacion)
+);
+
+CREATE TABLE calificaciones (
+    id_calificacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_evaluacion INT NOT NULL,
+    id_alumno INT NOT NULL,
+    nota DECIMAL(5,2) NOT NULL,
+    comentarios_profesor TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_evaluacion) REFERENCES evaluaciones(id_evaluacion),
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno),
+    UNIQUE (id_evaluacion, id_alumno)
+);
+
+CREATE TABLE asistencias (
+    id_asistencia INT AUTO_INCREMENT PRIMARY KEY,
+    id_curso INT NOT NULL,
+    id_alumno INT NOT NULL,
+    fecha DATE NOT NULL,
+    estado INT NOT NULL,
+    observaciones VARCHAR(255),
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno),
+    UNIQUE (id_curso, id_alumno, fecha)
+);
+
+CREATE TABLE aulas (
+    id_aula INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(50) NOT NULL,
+    capacidad INT NOT NULL,
+    tipo INT NOT NULL,
+    estado BOOLEAN DEFAULT TRUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE horarios_curso (
+    id_horario INT AUTO_INCREMENT PRIMARY KEY,
+    id_curso INT NOT NULL,
+    id_aula INT NOT NULL,
+    dia_semana INT NOT NULL,
+    hora_inicio TIME NOT NULL,
+    hora_fin TIME NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
+    FOREIGN KEY (id_aula) REFERENCES aulas(id_aula)
 );

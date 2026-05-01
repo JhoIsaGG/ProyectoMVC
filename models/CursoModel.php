@@ -96,13 +96,13 @@ class CursoModel {
     }
 
     public function crearcurso(array $datos): bool|string {
-        $sql = "INSERT INTO cursos (nombre, id_idioma, id_nivel, id_profesor, fecha_inicio, fecha_fin, horario, cupo_maximo, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO cursos (nombre, id_idioma, id_nivel, id_profesor, fecha_inicio, fecha_fin, cupo_maximo, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
         $datos['estado'] = 1;
         
-        $stmt->bind_param("siiisssii", $datos['nombre'], $datos['id_idioma'], $datos['id_nivel'], $datos['id_profesor'], $datos['fecha_inicio'], $datos['fecha_fin'], $datos['horario'], $datos['cupo_maximo'], $datos['estado']);
+        $stmt->bind_param("siiisssii", $datos['nombre'], $datos['id_idioma'], $datos['id_nivel'], $datos['id_profesor'], $datos['fecha_inicio'], $datos['fecha_fin'], $datos['cupo_maximo'], $datos['estado']);
         
         try {
             $stmt->execute();
@@ -114,11 +114,11 @@ class CursoModel {
     }
 
     public function actualizarcurso(array $datos): bool|string {
-        $sql = "UPDATE cursos SET nombre = ?, id_idioma = ?, id_nivel = ?, id_profesor = ?, fecha_inicio = ?, fecha_fin = ?, horario = ?, cupo_maximo = ?, estado = ? WHERE id_curso = ?";
+        $sql = "UPDATE cursos SET nombre = ?, id_idioma = ?, id_nivel = ?, id_profesor = ?, fecha_inicio = ?, fecha_fin = ?, cupo_maximo = ?, estado = ? WHERE id_curso = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("siiisssiii", $datos['nombre'], $datos['id_idioma'], $datos['id_nivel'], $datos['id_profesor'], $datos['fecha_inicio'], $datos['fecha_fin'], $datos['horario'], $datos['cupo_maximo'], $datos['estado'], $datos['id_curso']);
+        $stmt->bind_param("siiisssii", $datos['nombre'], $datos['id_idioma'], $datos['id_nivel'], $datos['id_profesor'], $datos['fecha_inicio'], $datos['fecha_fin'], $datos['cupo_maximo'], $datos['estado'], $datos['id_curso']);
         
         try {
             $stmt->execute();

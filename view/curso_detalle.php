@@ -21,7 +21,7 @@
                         <thead>
                             <tr>
                                 <th>Tipo</th>
-                                <th>Nota</th>
+                                <th>Punteo</th>
                                 <th>Fecha Publicación</th>
                                 <th>Fecha Entrega</th>
                                 <th>Observaciones</th>
@@ -31,7 +31,7 @@
                             <?php foreach ($evaluaciones as $ev): ?>
                                 <tr class="element-user">
                                     <td><strong><?php echo htmlspecialchars($ev['nombre_tipo']); ?></strong></td>
-                                    <td><?php echo $ev['nota'] !== null ? htmlspecialchars($ev['nota']) : '<em style="color:#aaa">Pendiente</em>'; ?></td>
+                                    <td><?php echo $ev['punteo'] !== null ? htmlspecialchars($ev['punteo']) : '<em style="color:#aaa">Pendiente</em>'; ?></td>
                                     <td><?php echo htmlspecialchars($ev['fecha_publicacion'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($ev['fecha_entrega'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($ev['observaciones'] ?? '—'); ?></td>

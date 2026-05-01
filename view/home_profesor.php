@@ -26,7 +26,6 @@
                             <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
                             <div class="course-card-meta">
                                 <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
-                                <span>🕐 <?php echo htmlspecialchars($curso['horario']); ?></span>
                                 <span>👥 Cupo: <?php echo htmlspecialchars($curso['cupo_maximo']); ?></span>
                             </div>
                             </a>

@@ -26,8 +26,7 @@
                             <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
                             <div class="course-card-meta">
                                 <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
-                                <span>🕐 <?php echo htmlspecialchars($curso['horario']); ?></span>
-                                <span>👥 Cupo: <?php echo htmlspecialchars($curso['cupo_maximo']); ?></span>
+                                <span> Cupo: <?php echo htmlspecialchars($curso['cupo_maximo']); ?></span>
                             </div>
                             <a class="btn btn-edit-sm" href="index.php?action=curso_edit&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="margin-top:12px;display:inline-block;">Editar</a>
                         </div>

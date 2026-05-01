@@ -49,13 +49,13 @@ class EvaluacionModel {
     }
 
     public function crearevaluacion(array $datos): bool|string {
-        $sql = "INSERT INTO evaluaciones (id_curso, nota, id_tipo_evaluacion, fecha_publicacion, fecha_entrega, observaciones, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO evaluaciones (id_curso, punteo, id_tipo_evaluacion, fecha_publicacion, fecha_entrega, observaciones, estado) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
         $datos['estado'] = 1;
         
-        $stmt->bind_param("idisssi", $datos['id_curso'], $datos['nota'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado']);
+        $stmt->bind_param("idisssi", $datos['id_curso'], $datos['punteo'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado']);
         
         try {
             $stmt->execute();
@@ -67,11 +67,11 @@ class EvaluacionModel {
     }
 
     public function actualizarevaluacion(array $datos): bool|string {
-        $sql = "UPDATE evaluaciones SET id_curso = ?, nota = ?, id_tipo_evaluacion = ?, fecha_publicacion = ?, fecha_entrega = ?, observaciones = ?, estado = ? WHERE id_evaluacion = ?";
+        $sql = "UPDATE evaluaciones SET id_curso = ?, punteo = ?, id_tipo_evaluacion = ?, fecha_publicacion = ?, fecha_entrega = ?, observaciones = ?, estado = ? WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         
-        $stmt->bind_param("idisssii", $datos['id_curso'], $datos['nota'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado'], $datos['id_evaluacion']);
+        $stmt->bind_param("idisssii", $datos['id_curso'], $datos['punteo'], $datos['id_tipo_evaluacion'], $datos['fecha_publicacion'], $datos['fecha_entrega'], $datos['observaciones'], $datos['estado'], $datos['id_evaluacion']);
         
         try {
             $stmt->execute();

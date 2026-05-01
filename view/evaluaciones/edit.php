@@ -33,8 +33,8 @@
                 </select>
             </div>
             <div class="form-col">
-                <label for="nota">Nota:</label>
-                <input type="text" id="nota" name="nota" value="<?php echo htmlspecialchars($evaluacion['nota']); ?>" required>
+                <label for="punteo">Punteo:</label>
+                <input type="text" id="punteo" name="punteo" value="<?php echo htmlspecialchars($evaluacion['punteo']); ?>" required>
             </div>
             <div class="form-col">
                 <label for="id_tipo_evaluacion">Tipo de Evaluación:</label>

@@ -23,7 +23,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Curso</th>
-                        <th>Nota</th>
+                        <th>Punteo</th>
                         <th>Tipo Evaluación</th>
                         <th>Fecha Publicación</th>
                         <th>Fecha Entrega</th>
@@ -38,7 +38,7 @@
                             <tr class="element-user">
                                 <td><?php echo htmlspecialchars($item['id_evaluacion']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre_curso']); ?></td>
-                                <td><?php echo htmlspecialchars($item['nota']); ?></td>
+                                <td><?php echo htmlspecialchars($item['punteo']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre_tipo']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_publicacion']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_entrega']); ?></td>

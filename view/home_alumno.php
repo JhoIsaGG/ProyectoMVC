@@ -26,7 +26,6 @@
                             <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
                             <div class="course-card-meta">
                                 <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
-                                <span>🕐 <?php echo htmlspecialchars($curso['horario']); ?></span>
                             </div>
                             <span class="btn btn-edit-sm" style="margin-top:12px;display:inline-block;">Ver Evaluaciones →</span>
                         </a>

@@ -67,10 +67,6 @@
                 <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo htmlspecialchars($curso['fecha_fin']); ?>" required>
             </div>
             <div class="form-col">
-                <label for="horario">Horario:</label>
-                <input type="text" id="horario" name="horario" value="<?php echo htmlspecialchars($curso['horario']); ?>" required>
-            </div>
-            <div class="form-col">
                 <label for="cupo_maximo">Cupo_maximo:</label>
                 <input type="text" id="cupo_maximo" name="cupo_maximo" value="<?php echo htmlspecialchars($curso['cupo_maximo']); ?>" required>
             </div>
