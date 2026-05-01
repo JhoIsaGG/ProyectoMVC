@@ -62,7 +62,7 @@
                 </select>
             </div>
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=evaluaciones">Cancelar</a>
+                <a class="btn btn-cancel" href="javascript:history.back()">Cancelar</a>
                 <button class="btn btn-submit" type="submit">Guardar</button>
             </div>
         </form>

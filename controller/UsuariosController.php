@@ -40,7 +40,7 @@ public function login():void{
                 'email'      => $usuario['email'],
                 'id_rol'     => $usuario['id_rol']
             ];
-            
+            session_regenerate_id(true);
             header("Location: index.php?action=home");
             exit();
         } else {
