@@ -3,6 +3,7 @@ require_once __DIR__ ."/../models/EvaluacionModel.php";
 require_once __DIR__ ."/../models/CursoModel.php";
 require_once __DIR__ ."/../models/TipoEvaluacionModel.php";
 require_once __DIR__ ."/../models/ProfesorModel.php";
+require_once __DIR__ ."/../models/AlumnoModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class EvaluacionesController {
@@ -10,6 +11,7 @@ class EvaluacionesController {
     private $cursoModelo;
     private $tipoModelo;
     private $profesorModelo;
+    private $alumnoModelo;
 
     public function __construct() {
         $conexion = (new Conexion())->conectar();
@@ -17,12 +19,13 @@ class EvaluacionesController {
         $this->cursoModelo = new CursoModel($conexion);
         $this->tipoModelo = new TipoEvaluacionModel($conexion);
         $this->profesorModelo = new ProfesorModel($conexion);
+        $this->alumnoModelo = new AlumnoModel($conexion);
     }
 
     /** Devuelve cursos filtrados según el rol del usuario en sesión */
     private function getCursosSegunRol(): array {
-        $rol = strtolower($_SESSION['usuario']['rol'] ?? '');
-        if (strpos($rol, 'profesor') !== false) {
+        $id_rol = $_SESSION['usuario']['id_rol'] ?? null;
+        if ($id_rol == 2) { // 2 = Profesor
             $profesor = $this->profesorModelo->getProfesorByUsuario((int)$_SESSION['usuario']['id_usuario']);
             if ($profesor) {
                 return $this->cursoModelo->getCursosByProfesor((int)$profesor['id_profesor']);
@@ -33,7 +36,18 @@ class EvaluacionesController {
     }
 
     public function index(): void {
-        $items = $this->modelo->getEvaluacionModels();
+        $id_curso = $_GET['id_curso'] ?? null;
+        if ($id_curso) {
+            $items = $this->modelo->getEvaluacionesByCurso($id_curso);
+        } else {
+            // Si es profesor, limitar a sus evaluaciones por defecto
+            if (($_SESSION['usuario']['id_rol'] ?? null) == 2) {
+                $profesor = $this->profesorModelo->getProfesorByUsuario((int)$_SESSION['usuario']['id_usuario']);
+                $items = $profesor ? $this->modelo->getEvaluacionesByProfesor($profesor['id_profesor']) : [];
+            } else {
+                $items = $this->modelo->getEvaluacionModels();
+            }
+        }
         include __DIR__ ."/../view/evaluaciones/index.php";
     }
 
@@ -44,9 +58,18 @@ class EvaluacionesController {
     }
 
     public function detalle():void{
-    $id_curso = $_GET['id_curso'] ?? null;
-    $evaluaciones = $this->modelo->getEvaluacionesByCurso($id_curso);
-    include __DIR__ ."/../view/curso_detalle.php";
+        $id_curso = $_GET['codigo'] ?? $_GET['id_curso'] ?? null;
+        $id_rol = $_SESSION['usuario']['id_rol'] ?? null;
+        $id_usuario = $_SESSION['usuario']['id_usuario'] ?? null;
+
+        if ($id_rol == 3) { // Alumno
+            $alumno = $this->alumnoModelo->getAlumnoByUsuario($id_usuario);
+            $evaluaciones = $alumno ? $this->modelo->getEvaluacionesConNotas((int)$id_curso, $alumno['id_alumno']) : [];
+        } else {
+            $evaluaciones = $this->modelo->getEvaluacionesByCurso((int)$id_curso);
+        }
+
+        include __DIR__ ."/../view/alumno/curso_detalle.php";
     }
 
     public function edit(): void {

@@ -18,18 +18,18 @@
                 <div class="courses-grid">
                     <?php foreach ($cursos as $curso): ?>
                         <div class="course-card">
-                            <a href="index.php?action=curso_detalle&codigo=<?php echo urlencode($curso['id_curso']); ?>">
-                            <div class="course-card-header">
-                                <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
-                                <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
-                            </div>
-                            <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
-                            <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
-                            <div class="course-card-meta">
-                                <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
-                            </div>
-                            <a class="btn btn-edit-sm" href="index.php?action=curso_edit&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="margin-top:12px;display:inline-block;">Editar</a>
+                            <a href="index.php?action=curso_detalle&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="text-decoration: none; color: inherit;">
+                                <div class="course-card-header">
+                                    <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
+                                    <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
+                                </div>
+                                <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
+                                <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
+                                <div class="course-card-meta">
+                                    <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
+                                </div>
                             </a>
+                            <a class="btn btn-edit-sm" href="index.php?action=curso_edit&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="margin-top:12px;display:inline-block;">Editar</a>
                         </div>
                     <?php endforeach; ?>
                 </div>

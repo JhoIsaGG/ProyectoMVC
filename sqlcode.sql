@@ -72,6 +72,7 @@ CREATE TABLE cursos (
     id_idioma INT NOT NULL,
     id_nivel INT NOT NULL,
     id_profesor INT NOT NULL,
+    id_aula INT NOT NULL,
     fecha_inicio DATE,
     fecha_fin DATE,
     cupo_maximo INT,
@@ -80,7 +81,8 @@ CREATE TABLE cursos (
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_idioma) REFERENCES idiomas(id_idioma),
     FOREIGN KEY (id_nivel) REFERENCES niveles(id_nivel),
-    FOREIGN KEY (id_profesor) REFERENCES profesores(id_profesor)
+    FOREIGN KEY (id_profesor) REFERENCES profesores(id_profesor),
+    FOREIGN KEY (id_aula) REFERENCES aulas(id_aula)
 );
 
 CREATE TABLE inscripciones (
@@ -158,12 +160,10 @@ CREATE TABLE aulas (
 CREATE TABLE horarios_curso (
     id_horario INT AUTO_INCREMENT PRIMARY KEY,
     id_curso INT NOT NULL,
-    id_aula INT NOT NULL,
     dia_semana INT NOT NULL,
     hora_inicio TIME NOT NULL,
     hora_fin TIME NOT NULL,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso),
-    FOREIGN KEY (id_aula) REFERENCES aulas(id_aula)
+    FOREIGN KEY (id_curso) REFERENCES cursos(id_curso)
 );

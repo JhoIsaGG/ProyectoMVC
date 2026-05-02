@@ -18,16 +18,17 @@
                 <div class="courses-grid">
                     <?php foreach ($cursos as $curso): ?>
                         <div class="course-card">
-                            <a href="index.php?action=evaluaciones&id_curso=<?php echo htmlspecialchars($curso['id_curso']); ?>">
-                            <div class="course-card-header">
-                                <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
-                                <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
-                            </div>
-                            <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
-                            <div class="course-card-meta">
-                                <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>                            </div>
+                            <a href="index.php?action=evaluaciones&id_curso=<?php echo htmlspecialchars($curso['id_curso']); ?>" style="text-decoration: none; color: inherit;">
+                                <div class="course-card-header">
+                                    <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
+                                    <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
+                                </div>
+                                <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
+                                <div class="course-card-meta">
+                                    <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
+                                </div>
                             </a>
-                            <a class="btn btn-submit" href="index.php?action=evaluacion_new" style="margin-top:12px;display:inline-block;">+ Crear Evaluación</a>
+                            <a class="btn btn-submit" href="index.php?action=evaluacion_new&id_curso=<?php echo htmlspecialchars($curso['id_curso']); ?>" style="margin-top:12px;display:inline-block;">+ Crear Evaluación</a>
                         </div>
                         
                     <?php endforeach; ?>

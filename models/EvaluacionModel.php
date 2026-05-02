@@ -39,6 +39,24 @@ class EvaluacionModel {
         return $items;
     }
 
+    public function getEvaluacionesConNotas(int $id_curso, int $id_alumno): array {
+        $sql = "SELECT e.*, te.nombre AS nombre_tipo, c.nota AS nota_obtenida
+                FROM evaluaciones e
+                JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
+                LEFT JOIN calificaciones c ON e.id_evaluacion = c.id_evaluacion AND c.id_alumno = ?
+                WHERE e.id_curso = ? AND e.estado = 1
+                ORDER BY e.id_evaluacion DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("ii", $id_alumno, $id_curso);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
     public function getevaluacionById(int $id): ?array {
         $sql = "SELECT * FROM evaluaciones WHERE id_evaluacion = ?";
         $stmt = $this->conexion->prepare($sql);

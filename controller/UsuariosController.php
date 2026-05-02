@@ -5,6 +5,8 @@ require_once __DIR__ ."/../models/RolModel.php";
 require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 require_once __DIR__ ."/../models/CursoModel.php";
+require_once __DIR__ . "/../models/ProfesorModel.php";
+require_once __DIR__ . "/../models/AlumnoModel.php";
 
 class UsuariosController{
 
@@ -12,6 +14,8 @@ private $modelo;
 private $rolModelo;
 private $idiomaModelo;
 private $cursoModelo;
+private $profesorModelo;
+private $alumnoModelo;
 
 public function __construct(){
         $conexion = (new Conexion())->conectar();
@@ -19,6 +23,8 @@ public function __construct(){
         $this->rolModelo = new RolModel($conexion);
         $this->idiomaModelo = new IdiomaModel($conexion);
         $this->cursoModelo = new CursoModel($conexion);
+        $this->profesorModelo = new ProfesorModel($conexion);
+        $this->alumnoModelo = new AlumnoModel($conexion);
 }
 
 
@@ -81,12 +87,16 @@ public function home_admin():void{
 }
 
 public function home_profesor():void{
-    $cursos = $this->cursoModelo->getCursoModels();
+    $id_usuario = $_SESSION['usuario']['id_usuario'];
+    $profesor = $this->profesorModelo->getProfesorByUsuario($id_usuario);
+    $cursos = $profesor ? $this->cursoModelo->getCursosByProfesor($profesor['id_profesor']) : [];
     include __DIR__ ."/../view/profesor/home.php";
 }
 
 public function home_alumno():void{
-    $cursos = $this->cursoModelo->getCursoModels();
+    $id_usuario = $_SESSION['usuario']['id_usuario'];
+    $alumno = $this->alumnoModelo->getAlumnoByUsuario($id_usuario);
+    $cursos = $alumno ? $this->cursoModelo->getCursosByAlumno($alumno['id_alumno']) : [];
     include __DIR__ ."/../view/alumno/home.php";
 }
 

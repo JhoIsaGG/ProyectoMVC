@@ -46,9 +46,9 @@ class HorariosCursoController {
 
     public function edit(): void {
         $codigo = $_GET['codigo'] ?? null;
-        if (!$codigo) { header("Location: index.php?action=horarios_curso"); exit(); }
+        if (!$codigo) { header("Location: index.php?action=horarios"); exit(); }
         $horario = $this->modelo->gethorarioById($codigo);
-        if (!$horario) { header("Location: index.php?action=horarios_curso"); exit(); }
+        if (!$horario) { header("Location: index.php?action=horarios"); exit(); }
         $cursos = $this->getCursosSegunRol();
         $aulas  = $this->aulaModelo->getAulasActivas();
         $dias   = HorarioCursoModel::DIAS;
@@ -67,7 +67,7 @@ class HorariosCursoController {
                 return;
             }
         }
-        header("Location: index.php?action=horarios_curso");
+        header("Location: index.php?action=horarios");
         exit();
     }
 
@@ -84,14 +84,14 @@ class HorariosCursoController {
                 return;
             }
         }
-        header("Location: index.php?action=horarios_curso");
+        header("Location: index.php?action=horarios");
         exit();
     }
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminarhorario((int)$codigo);
-        header("Location: index.php?action=horarios_curso");
+        header("Location: index.php?action=horarios");
         exit();
     }
 }
