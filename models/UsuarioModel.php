@@ -10,7 +10,7 @@ class UsuarioModel {
     public function login(string $username, string $password): ?array {
         $sql = "SELECT *
                 FROM usuarios 
-                WHERE username = ? AND password = ? AND estado = 1 
+                WHERE username = ? AND estado = 1 
                 LIMIT 1";
 
         $stmt = $this->conexion->prepare($sql);
@@ -18,7 +18,7 @@ class UsuarioModel {
         if(!$stmt) {
             return null; // Error al preparar la consulta
         }
-        $stmt->bind_param("ss", $username, $password);
+        $stmt->bind_param("s", $username);
         $stmt->execute();
         $resultado = $stmt->get_result();
         $usuario = $resultado->fetch_assoc() ?: null;
@@ -27,7 +27,11 @@ class UsuarioModel {
             return null;
         }
 
-        return $usuario;
+        if($usuario && password_verify($password, $usuario['password'])) {
+            return $usuario;
+        } else {
+            return null;
+        }
     }
 
     public function getUsuarios(): array {
@@ -110,8 +114,9 @@ class UsuarioModel {
         if (!$stmt) {
             return false; // Error al preparar la consulta
         }
+        $hashedPassword = password_hash($datos['password'], PASSWORD_DEFAULT);
         $estado = 1; 
-        $stmt->bind_param("ssssssssii", $datos['nombres'], $datos['apellidos'], $datos['username'], $datos['password'], $datos['email'], $datos['telefono'], $datos['fecha_nacimiento'], $datos['direccion'], $datos['id_rol'], $estado);
+        $stmt->bind_param("ssssssssii", $datos['nombres'], $datos['apellidos'], $datos['username'], $hashedPassword, $datos['email'], $datos['telefono'], $datos['fecha_nacimiento'], $datos['direccion'], $datos['id_rol'], $estado);
         
         try {
             $stmt->execute();
@@ -172,20 +177,19 @@ class UsuarioModel {
         $sql = "UPDATE usuarios 
                 SET password = ? 
                 WHERE id_usuario = ?";
-
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
         $stmt = $this->conexion->prepare($sql);
 
         if (!$stmt) {
             return false;
         }
 
-        $stmt->bind_param("si", $password, $id_usuario);
+        $stmt->bind_param("si", $hashedPassword, $id_usuario);
 
         return $stmt->execute();
     }
 
     public function eliminarUsuario(int $id): bool {
-        // Mejor usar borrado lógico
         $sql = "UPDATE usuarios 
                 SET estado = 0 
                 WHERE id_usuario = ?";

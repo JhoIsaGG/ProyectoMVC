@@ -17,7 +17,7 @@ class Router {
             $requestRoute = $defaultRoute;
         }
 
-        $publicRoutes = ['index', 'login', 'usuario_login'];
+        $publicRoutes = ['index', 'login', 'usuario_login', 'usuario_new', 'usuario_create'];
 
         if (!in_array($requestRoute, $publicRoutes) && empty($_SESSION['usuario'])) {
             header("Location: index.php?action=index");

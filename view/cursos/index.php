@@ -28,7 +28,6 @@
                         <th>Profesor</th>
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
-                        <th>Cupo</th>
                         <th>Estado</th>
                         <th>Acciones</th>
                     </tr>
@@ -44,7 +43,6 @@
                                 <td><?php echo htmlspecialchars($item['nombre_profesor']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_inicio']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_fin']); ?></td>
-                                <td><?php echo htmlspecialchars($item['cupo_maximo']); ?></td>
                                 <td>
                                     <?php if ($item['estado'] == 1): ?>
                                         <span class="badge-active">Activo</span>

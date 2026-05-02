@@ -14,6 +14,11 @@ require "controller/ProfesoresController.php";
 require "controller/CursosController.php";
 require "controller/InscripcionesController.php";
 require "controller/EvaluacionesController.php";
+require "controller/HorariosCursoController.php";
+require "controller/AsistenciasController.php";
+require "controller/AulasController.php";
+require "controller/CalificacionesController.php";
+
 
 $router = new Router();
 
@@ -27,6 +32,10 @@ $profesoresController = new ProfesoresController();
 $cursosController = new CursosController();
 $inscripcionesController = new InscripcionesController();
 $evaluacionesController = new EvaluacionesController();
+$horariosController = new HorariosCursoController();
+$asistenciasController = new AsistenciasController();
+$aulasController = new AulasController();
+$calificacionesController = new CalificacionesController();
 
 $controllers = [
     'usuario' => [$usuariosController, 'usuarios'],
@@ -39,10 +48,17 @@ $controllers = [
     'curso' => [$cursosController, 'cursos'],
     'inscripcion' => [$inscripcionesController, 'inscripciones'],
     'evaluacion' => [$evaluacionesController, 'evaluaciones'],
+    'horario' => [$horariosController, 'horarios'],
+    'asistencia' => [$asistenciasController, 'asistencias'],
+    'aula' => [$aulasController, 'aulas'],
+    'calificacion' => [$calificacionesController, 'calificaciones'],
 ];
 
 $router->add('usuario_login', [$usuariosController, 'login']);
 $router->add('logout', [$usuariosController, 'logout']);
+
+
+//Vistas específicas
 $router->add('usuario_search', [$usuariosController, 'search']);
 $router->add('curso_detalle', [$evaluacionesController, 'detalle']);
 

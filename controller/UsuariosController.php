@@ -77,17 +77,17 @@ public function index():void{
 
 public function home_admin():void{
     $cursos = $this->cursoModelo->getCursoModels();
-    include __DIR__ ."/../view/home_admin.php";
+    include __DIR__ ."/../view/admin/home.php";
 }
 
 public function home_profesor():void{
     $cursos = $this->cursoModelo->getCursoModels();
-    include __DIR__ ."/../view/home_profesor.php";
+    include __DIR__ ."/../view/profesor/home.php";
 }
 
 public function home_alumno():void{
     $cursos = $this->cursoModelo->getCursoModels();
-    include __DIR__ ."/../view/home_alumno.php";
+    include __DIR__ ."/../view/alumno/home.php";
 }
 
 

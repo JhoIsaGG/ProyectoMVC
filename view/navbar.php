@@ -15,6 +15,10 @@
             <li><a href="index.php?action=usuarios">Usuarios</a></li>
             <li><a href="index.php?action=roles">Roles</a></li>
             <li><a href="index.php?action=tipos_evaluacion">Tipos Evaluación</a></li>
+            <li><a href="index.php?action=horarios">Horarios</a></li>
+            <li><a href="index.php?action=asistencias">Asistencias</a></li>
+            <li><a href="index.php?action=aulas">Aulas</a></li>
+            <li><a href="index.php?action=calificaciones">Calificaciones</a></li>
             <?php elseif ($_SESSION['usuario']['id_rol'] == '2'): ?>
                 <li><a href="index.php?action=home">Inicio</a></li>
             <?php elseif ($_SESSION['usuario']['id_rol'] == '3'): ?>

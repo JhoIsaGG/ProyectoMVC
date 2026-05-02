@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
 <body>
-    <?php include __DIR__ . '/navbar.php'; ?>
+    <?php include __DIR__ . '/../navbar.php'; ?>
 
     <main style="margin-top: 100px; padding: 30px;">
         <div class="mainContainer">

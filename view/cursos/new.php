@@ -60,10 +60,6 @@
                 <input type="date" id="fecha_fin" name="fecha_fin" required>
             </div>
             <div class="form-col">
-                <label for="cupo_maximo">Cupo_maximo:</label>
-                <input type="text" id="cupo_maximo" name="cupo_maximo" required>
-            </div>
-            <div class="form-col">
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado">
                     <option value="1">Activo</option>
