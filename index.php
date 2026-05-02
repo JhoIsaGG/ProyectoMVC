@@ -19,11 +19,13 @@ require "controller/AsistenciasController.php";
 require "controller/AulasController.php";
 require "controller/CalificacionesController.php";
 require "controller/EntregasController.php";
+require "controller/AuthController.php";
 
 
 $router = new Router();
 
 $usuariosController = new UsuariosController();
+$authController = new AuthController();
 $rolesController = new RolesController();
 $idiomasController = new IdiomasController();
 $nivelesController = new NivelesController();
@@ -57,8 +59,8 @@ $controllers = [
     'entrega' => [$entregasController, 'entregas'],
 ];
 
-$router->add('usuario_login', [$usuariosController, 'login']);
-$router->add('logout', [$usuariosController, 'logout']);
+$router->add('usuario_login', [$authController, 'login']);
+$router->add('logout', [$authController, 'logout']);
 
 
 $router->add('curso_reactivate', [$cursosController, 'reactivate']);
