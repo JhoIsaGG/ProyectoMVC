@@ -16,10 +16,24 @@ class TiposEvaluacionController {
     }
 
     public function new(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         include __DIR__ ."/../view/tipos_evaluacion/new.php";
     }
 
     public function edit(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_GET['codigo'] ?? null;
         if (!$codigo) {
             header("Location: index.php?action=tipos_evaluacion");
@@ -34,6 +48,13 @@ class TiposEvaluacionController {
     }
 
     public function create(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->creartipo_evaluacion($_POST);
             if ($exito !== true) {
@@ -47,6 +68,13 @@ class TiposEvaluacionController {
     }
 
     public function update(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->actualizartipo_evaluacion($_POST);
             if ($exito !== true) {
@@ -61,6 +89,13 @@ class TiposEvaluacionController {
     }
 
     public function delete(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminartipo_evaluacion($codigo);
         header("Location: index.php?action=tipos_evaluacion");

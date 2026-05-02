@@ -108,6 +108,13 @@ public function home_alumno():void{
  * NEW
  */
 public function new():void{
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
     $roles = $this->rolModelo->getRolModels();
     $idiomas = $this->idiomaModelo->getIdiomaModels();
     include __DIR__ ."/../view/usuarios/new.php";
@@ -117,6 +124,14 @@ public function new():void{
  * SEARCH WITH NAME
  */
 public function search():void{
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
+
     $usuarios = $this->modelo->buscarUsuarioNombre($_POST['nombre'] ?? '');
     include __DIR__ ."/../view/usuarios/index.php";
 }   
@@ -125,6 +140,14 @@ public function search():void{
  * EDIT
  */
 public function edit():void{
+
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
     $codigo = $_GET['codigo'] ?? null;
     $usuario = $this->modelo->getUsuario($codigo);
     if (!$usuario) {
@@ -158,6 +181,13 @@ public function edit():void{
  * CREATE
  */
 public function create():void{
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $exito = $this->modelo->crearUsuario($_POST);
         
@@ -216,6 +246,13 @@ public function create():void{
  * UPDATE
  */
 public function update():void{
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $exito = $this->modelo->actualizarUsuario($_POST);
         
@@ -269,6 +306,13 @@ public function update():void{
  */
 
 public function delete():void{
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
     $codigo = $_POST['codigo'] ?? null;
     $this->modelo->eliminarUsuario($codigo);
     echo "<script>
@@ -283,6 +327,13 @@ public function delete():void{
  * REACTIVATE
  */
 public function reactivate(): void {
+     if($_SESSION['usuario']['id_rol'] != 1){
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->reactivarUsuario($codigo);
         

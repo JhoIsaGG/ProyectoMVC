@@ -16,10 +16,24 @@ class RolesController {
     }
 
     public function new(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         include __DIR__ ."/../view/roles/new.php";
     }
 
     public function edit(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_GET['codigo'] ?? null;
         if (!$codigo) {
             header("Location: index.php?action=roles");
@@ -34,6 +48,13 @@ class RolesController {
     }
 
     public function create(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->crearrol($_POST);
             if ($exito !== true) {
@@ -47,6 +68,13 @@ class RolesController {
     }
 
     public function update(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->actualizarrol($_POST);
             if ($exito !== true) {
@@ -61,6 +89,13 @@ class RolesController {
     }
 
     public function delete(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminarrol($codigo);
         header("Location: index.php?action=roles");
@@ -68,6 +103,13 @@ class RolesController {
     }
 
     public function reactivate(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->reactivarrol($codigo);
         header("Location: index.php?action=roles");

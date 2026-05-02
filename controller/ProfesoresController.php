@@ -20,11 +20,25 @@ class ProfesoresController {
     }
 
     public function index(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $items = $this->modelo->getProfesorModels();
         include __DIR__ ."/../view/profesores/index.php";
     }
 
     public function new(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         // Buscar id de rol 'profesor'
         $roles = $this->rolModelo->getRolModels();
         $id_rol_profesor = null;
@@ -39,6 +53,13 @@ class ProfesoresController {
     }
 
     public function edit(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_GET['codigo'] ?? null;
         if (!$codigo) {
             header("Location: index.php?action=profesores");
@@ -57,6 +78,13 @@ class ProfesoresController {
     }
 
     public function create(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->usuarioModelo->crearUsuario($_POST);
             if ($exito === false || is_string($exito)) {
@@ -87,6 +115,13 @@ class ProfesoresController {
     }
 
     public function update(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Actualizar usuario
             $exito = $this->usuarioModelo->actualizarUsuario($_POST);
@@ -112,6 +147,13 @@ class ProfesoresController {
     }
 
     public function delete(): void {
+        if($_SESSION['usuario']['id_rol'] != 1){
+            echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                    </script>";
+            exit();
+        }
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminarprofesor($codigo);
         header("Location: index.php?action=profesores");
