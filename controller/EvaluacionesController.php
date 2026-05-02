@@ -54,6 +54,10 @@ class EvaluacionesController {
     public function new(): void {
         $cursos = $this->getCursosSegunRol();
         $tipos = $this->tipoModelo->getTipoEvaluacionModels();
+        
+        $id_curso_preseleccionado = $_GET['id_curso'] ?? null;
+        $id_tipo_preseleccionado = $_GET['id_tipo'] ?? null;
+        
         include __DIR__ ."/../view/evaluaciones/new.php";
     }
 
@@ -85,12 +89,16 @@ class EvaluacionesController {
         }
         $cursos = $this->getCursosSegunRol();
         $tipos = $this->tipoModelo->getTipoEvaluacionModels();
+        
+        $redirect_to_curso = $_GET['redirect_to_curso'] ?? null;
+        
         include __DIR__ ."/../view/evaluaciones/edit.php";
     }
 
     public function create(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->crearevaluacion($_POST);
+            
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al crear.";
                 $cursos = $this->getCursosSegunRol();
@@ -106,6 +114,7 @@ class EvaluacionesController {
     public function update(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->actualizarevaluacion($_POST);
+            
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
                 $evaluacion = $_POST;
@@ -121,7 +130,7 @@ class EvaluacionesController {
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->eliminarevaluacion($codigo);
+        $this->modelo->eliminarevaluacion((int)$codigo);
         header("Location: index.php?action=evaluaciones");
         exit();
     }

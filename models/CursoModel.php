@@ -27,6 +27,29 @@ class CursoModel {
         return $items;
     }
 
+    public function getCursosByNivel(int $id_nivel): array {
+        $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel, 
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor,
+                       a.nombre AS nombre_aula
+                FROM cursos c
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                JOIN profesores p ON c.id_profesor = p.id_profesor
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                JOIN aulas a ON c.id_aula = a.id_aula
+                WHERE c.id_nivel = ?
+                ORDER BY c.id_curso DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_nivel);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
     public function getCursosActivos(): array {
         $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel,
                        CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor
@@ -89,7 +112,18 @@ class CursoModel {
     }
 
     public function getcursoById(int $id): ?array {
-        $sql = "SELECT * FROM cursos WHERE id_curso = ?";
+        $sql = "SELECT 
+                    c.*, 
+                    i.nombre AS nombre_idioma, 
+                    n.nombre AS nombre_nivel,
+                    CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor
+                FROM cursos c
+                JOIN idiomas i ON c.id_idioma = i.id_idioma
+                JOIN niveles n ON c.id_nivel = n.id_nivel
+                JOIN profesores p ON c.id_profesor = p.id_profesor
+                JOIN usuarios u ON p.id_usuario = u.id_usuario
+                WHERE c.estado = 1 AND c.id_curso = ?
+                ORDER BY c.id_curso DESC;";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();

@@ -94,5 +94,25 @@ class AsistenciasController {
         header("Location: index.php?action=asistencias");
         exit();
     }
+
+    public function asistencia_batch(): void {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id_curso = $_POST['id_curso'] ?? null;
+            $fecha = $_POST['fecha'] ?? null;
+            $asistencias = $_POST['asistencia'] ?? [];
+
+            if ($id_curso && $fecha && !empty($asistencias)) {
+                $exito = $this->modelo->guardarAsistenciaBatch((int)$id_curso, $fecha, $asistencias);
+                if ($exito) {
+                    echo "<script>alert('Asistencia guardada correctamente.'); window.location.href='index.php?action=curso_asistencias&id_curso={$id_curso}';</script>";
+                } else {
+                    echo "<script>alert('Error al guardar la asistencia.'); window.location.href='index.php?action=curso_asistencias&id_curso={$id_curso}';</script>";
+                }
+                exit();
+            }
+        }
+        header("Location: index.php?action=home");
+        exit();
+    }
 }
 ?>

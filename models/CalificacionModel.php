@@ -39,6 +39,15 @@ class CalificacionModel {
         return $result->fetch_assoc() ?: null;
     }
 
+    public function getCalificacionByEntrega(int $id_entrega): ?array {
+        $sql = "SELECT * FROM calificaciones WHERE id_entrega = ?";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_entrega);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc() ?: null;
+    }
+
     public function crearcalificacion(array $datos): bool|string {
         $sql = "INSERT INTO calificaciones (id_entrega, nota, comentarios_profesor) VALUES (?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);

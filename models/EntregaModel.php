@@ -54,7 +54,18 @@ class EntregaModel {
     }
 
     public function getentregaById(int $id): ?array {
-        $sql = "SELECT * FROM entregas WHERE id_entrega = ?";
+        $sql = "SELECT en.*, 
+                       te.nombre AS nombre_tipo,
+                       c.nombre AS nombre_curso,
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_alumno,
+                       ev.punteo AS punteo_maximo
+                FROM entregas en
+                JOIN evaluaciones ev ON en.id_evaluacion = ev.id_evaluacion
+                JOIN tipos_evaluacion te ON ev.id_tipo_evaluacion = te.id_tipo_evaluacion
+                JOIN cursos c ON ev.id_curso = c.id_curso
+                JOIN alumnos a ON en.id_alumno = a.id_alumno
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                WHERE en.id_entrega = ?";
         $stmt = $this->conexion->prepare($sql);
         $stmt->bind_param("i", $id);
         $stmt->execute();

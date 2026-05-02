@@ -17,21 +17,27 @@
         <?php endif; ?>
 
         <form action="index.php?action=calificacion_create" method="POST" class="user-form">
+            <input type="hidden" name="id_entrega" value="<?php echo htmlspecialchars($entrega['id_entrega']); ?>">
+            
             <div class="form-row">
                 <div class="form-col">
-                    <label for="id_entrega">Entrega Pendiente:</label>
-                    <select id="id_entrega" name="id_entrega" required>
-                        <option value="">Seleccione una entrega...</option>
-                        <?php foreach ($entregas as $en): ?>
-                            <option value="<?php echo htmlspecialchars($en['id_entrega']); ?>">
-                                <?php echo htmlspecialchars($en['nombre_alumno'] . " - " . $en['nombre_tipo'] . " (" . $en['nombre_curso'] . ")"); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
+                    <label>Alumno:</label>
+                    <div style="color:#ffd166; font-weight:bold; margin-top:5px;">
+                        <?php echo htmlspecialchars($entrega['nombre_alumno']); ?>
+                    </div>
                 </div>
                 <div class="form-col">
-                    <label for="nota">Nota:</label>
-                    <input type="number" step="0.01" min="0" id="nota" name="nota" placeholder="Ej: 95.00" required>
+                    <label>Evaluación:</label>
+                    <div style="color:#ccc; margin-top:5px;">
+                        <?php echo htmlspecialchars($entrega['nombre_tipo'] . " (" . $entrega['nombre_curso'] . ")"); ?>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-col">
+                    <label for="nota">Nota (Máx: <?php echo htmlspecialchars($entrega['punteo_maximo'] ?? '100'); ?>):</label>
+                    <input type="number" step="0.01" min="0" max="<?php echo htmlspecialchars($entrega['punteo_maximo'] ?? '100'); ?>" id="nota" name="nota" placeholder="Ej: 95.00" required>
                 </div>
             </div>
             <div>
@@ -39,7 +45,7 @@
                 <textarea id="comentarios_profesor" name="comentarios_profesor" placeholder="Observaciones sobre el trabajo..."></textarea>
             </div>
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=calificaciones">Cancelar</a>
+                <a class="btn btn-cancel" href="javascript:history.back()">Cancelar</a>
                 <button class="btn btn-submit" type="submit">Guardar Calificación</button>
             </div>
         </form>

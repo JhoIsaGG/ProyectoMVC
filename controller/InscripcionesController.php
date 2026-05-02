@@ -46,6 +46,7 @@ class InscripcionesController {
     public function create(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->crearinscripcion($_POST);
+            
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al crear.";
                 $alumnos = $this->alumnoModelo->getAlumnoModels();
@@ -76,7 +77,7 @@ class InscripcionesController {
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->eliminarinscripcion($codigo);
+        $this->modelo->eliminarinscripcion((int)$codigo);
         header("Location: index.php?action=inscripciones");
         exit();
     }

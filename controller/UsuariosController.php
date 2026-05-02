@@ -5,6 +5,7 @@ require_once __DIR__ ."/../models/RolModel.php";
 require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 require_once __DIR__ ."/../models/CursoModel.php";
+require_once __DIR__ ."/../models/NivelModel.php";
 require_once __DIR__ . "/../models/ProfesorModel.php";
 require_once __DIR__ . "/../models/AlumnoModel.php";
 
@@ -14,6 +15,7 @@ private $modelo;
 private $rolModelo;
 private $idiomaModelo;
 private $cursoModelo;
+private $nivelModelo;
 private $profesorModelo;
 private $alumnoModelo;
 
@@ -23,6 +25,7 @@ public function __construct(){
         $this->rolModelo = new RolModel($conexion);
         $this->idiomaModelo = new IdiomaModel($conexion);
         $this->cursoModelo = new CursoModel($conexion);
+        $this->nivelModelo = new NivelModel($conexion);
         $this->profesorModelo = new ProfesorModel($conexion);
         $this->alumnoModelo = new AlumnoModel($conexion);
 }
@@ -82,7 +85,7 @@ public function index():void{
  */
 
 public function home_admin():void{
-    $cursos = $this->cursoModelo->getCursoModels();
+    $niveles = $this->nivelModelo->getNivelesConCursosActivos();
     include __DIR__ ."/../view/admin/home.php";
 }
 

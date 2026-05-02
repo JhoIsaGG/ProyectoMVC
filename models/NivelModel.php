@@ -18,6 +18,23 @@ class NivelModel {
         return $items;
     }
 
+    public function getNivelesConCursosActivos(): array {
+        $sql = "SELECT n.*, COUNT(c.id_curso) AS cursos_activos
+                FROM niveles n
+                LEFT JOIN cursos c ON n.id_nivel = c.id_nivel AND c.estado = 1
+                WHERE n.estado = 1
+                GROUP BY n.id_nivel
+                ORDER BY n.id_nivel ASC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
     public function getnivelById(int $id): ?array {
         $sql = "SELECT * FROM niveles WHERE id_nivel = ?";
         $stmt = $this->conexion->prepare($sql);

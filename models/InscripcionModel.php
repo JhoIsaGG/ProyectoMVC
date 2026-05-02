@@ -34,11 +34,9 @@ class InscripcionModel {
     }
 
     public function crearinscripcion(array $datos): bool|string {
-        $sql = "INSERT INTO inscripciones (id_alumno, id_curso) VALUES (?, ?)";
+        $sql = "INSERT INTO inscripciones (id_alumno, id_curso, estado) VALUES (?, ?, 1)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
-        
-        
         
         $stmt->bind_param("ii", $datos['id_alumno'], $datos['id_curso']);
         
@@ -68,12 +66,19 @@ class InscripcionModel {
     }
 
     public function eliminarinscripcion(int $id): bool {
-        $sql = "DELETE FROM inscripciones WHERE id_inscripcion = ?";
+        $sql = "UPDATE inscripciones SET estado = 0 WHERE id_inscripcion = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
 
+    public function reactivarinscripcion(int $id): bool {
+        $sql = "UPDATE inscripciones SET estado = 1 WHERE id_inscripcion = ?";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return false;
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
 }
 ?>

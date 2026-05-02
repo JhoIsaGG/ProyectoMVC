@@ -131,5 +131,39 @@ class AsistenciaModel {
         $stmt->bind_param("i", $id);
         return $stmt->execute();
     }
+
+    public function reactivarasistencia(int $id): bool {
+        $sql = "UPDATE asistencias SET estado = 1 WHERE id_asistencia = ?";
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return false;
+        $stmt->bind_param("i", $id);
+        return $stmt->execute();
+    }
+
+    public function guardarAsistenciaBatch(int $id_curso, string $fecha, array $asistencias): bool {
+        // Usa INSERT ON DUPLICATE KEY UPDATE para insertar o actualizar en bloque
+        $sql = "INSERT INTO asistencias (id_curso, id_alumno, fecha, estado, observaciones) 
+                VALUES (?, ?, ?, ?, ?) 
+                ON DUPLICATE KEY UPDATE 
+                estado = VALUES(estado), observaciones = VALUES(observaciones)";
+        
+        $stmt = $this->conexion->prepare($sql);
+        if (!$stmt) return false;
+
+        $this->conexion->begin_transaction();
+        try {
+            foreach ($asistencias as $id_alumno => $datos) {
+                $estado = (int)$datos['estado'];
+                $obs = $datos['observacion'] ?? '';
+                $stmt->bind_param("iisis", $id_curso, $id_alumno, $fecha, $estado, $obs);
+                $stmt->execute();
+            }
+            $this->conexion->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->conexion->rollback();
+            return false;
+        }
+    }
 }
 ?>

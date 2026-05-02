@@ -6,34 +6,32 @@
     <title>Inicio — Administrador | Academia de Idiomas</title>
     <link rel="stylesheet" href="./assets/css/styles.css">
 </head>
-<body>
+<body class="user-body-bg">
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <main style="margin-top: 100px; padding: 30px;">
         <div class="mainContainer">
-            <h2 class="user-management-title">Todos los Cursos Activos</h2>
-            <p style="color:#aaa; margin-bottom:24px;">Vista de administrador — todos los cursos disponibles con su profesor asignado.</p>
+            <h2 class="user-management-title">Niveles Educativos</h2>
+            <p style="color:#aaa; margin-bottom:24px;">Seleccione un nivel para gestionar sus cursos asociados.</p>
 
-            <?php if (!empty($cursos)): ?>
+            <?php if (!empty($niveles)): ?>
                 <div class="courses-grid">
-                    <?php foreach ($cursos as $curso): ?>
+                    <?php foreach ($niveles as $nivel): ?>
                         <div class="course-card">
-                            <a href="index.php?action=curso_detalle&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="text-decoration: none; color: inherit;">
-                                <div class="course-card-header">
-                                    <span class="course-lang-badge"><?php echo htmlspecialchars($curso['nombre_idioma']); ?></span>
-                                    <span class="course-level-badge"><?php echo htmlspecialchars($curso['nombre_nivel']); ?></span>
+                            <a href="index.php?action=cursos_por_nivel&id_nivel=<?php echo urlencode($nivel['id_nivel']); ?>" style="text-decoration: none; color: inherit;">
+                                <div class="course-card-header" style="justify-content: space-between;">
+                                    <span class="course-level-badge" style="font-size: 1.2em;"><?php echo htmlspecialchars($nivel['nombre']); ?></span>
+                                    <span class="badge-active" style="background-color: var(--primary-accent);"><?php echo htmlspecialchars($nivel['cursos_activos']); ?> Cursos Activos</span>
                                 </div>
-                                <h3 class="course-card-title"><?php echo htmlspecialchars($curso['nombre']); ?></h3>
-                                <p class="course-card-teacher">👨‍🏫 <?php echo htmlspecialchars($curso['nombre_profesor']); ?></p>
-                                <div class="course-card-meta">
-                                    <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
-                                </div>
+                                <p class="course-card-teacher" style="margin-top: 15px; color: #ccc;">
+                                    <?php echo htmlspecialchars($nivel['descripcion'] ?? 'Sin descripción'); ?>
+                                </p>
                             </a>
                         </div>
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <div class="empty-state">No hay cursos activos registrados.</div>
+                <div class="empty-state">No hay niveles activos registrados en el sistema.</div>
             <?php endif; ?>
         </div>
     </main>

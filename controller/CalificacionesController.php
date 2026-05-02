@@ -19,8 +19,25 @@ class CalificacionesController {
     }
 
     public function new(): void {
-        // Solo mostramos entregas que aún no tienen calificación para facilitar el trabajo al profesor
-        $entregas = $this->entregaModelo->getEntregasPendientesCalificar();
+        $id_entrega = $_GET['id_entrega'] ?? null;
+        if (!$id_entrega) {
+            header("Location: index.php?action=calificaciones");
+            exit();
+        }
+
+        // Verificar si ya existe calificación para esta entrega
+        $existente = $this->modelo->getCalificacionByEntrega((int)$id_entrega);
+        if ($existente) {
+            header("Location: index.php?action=calificacion_edit&codigo=" . $existente['id_calificacion']);
+            exit();
+        }
+
+        $entrega = $this->entregaModelo->getentregaById((int)$id_entrega);
+        if (!$entrega) {
+            header("Location: index.php?action=calificaciones");
+            exit();
+        }
+
         include __DIR__ ."/../view/calificaciones/new.php";
     }
 
@@ -30,7 +47,7 @@ class CalificacionesController {
         $calificacion = $this->modelo->getcalificacionById($codigo);
         if (!$calificacion) { header("Location: index.php?action=calificaciones"); exit(); }
         
-        $entregas = $this->entregaModelo->getEntregaModels();
+        $entrega = $this->entregaModelo->getentregaById((int)$calificacion['id_entrega']);
         include __DIR__ ."/../view/calificaciones/edit.php";
     }
 
@@ -39,13 +56,15 @@ class CalificacionesController {
             $exito = $this->modelo->crearcalificacion($_POST);
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al calificar.";
-                $entregas = $this->entregaModelo->getEntregasPendientesCalificar();
+                $entrega = $this->entregaModelo->getentregaById((int)($_POST['id_entrega'] ?? 0));
                 include __DIR__ ."/../view/calificaciones/new.php";
                 return;
             }
         }
-        header("Location: index.php?action=calificaciones");
-        exit();
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
     }
 
     public function update(): void {
@@ -54,13 +73,15 @@ class CalificacionesController {
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
                 $calificacion = $_POST;
-                $entregas = $this->entregaModelo->getEntregaModels();
+                $entrega = $this->entregaModelo->getentregaById((int)($calificacion['id_entrega'] ?? 0));
                 include __DIR__ ."/../view/calificaciones/edit.php";
                 return;
             }
         }
-        header("Location: index.php?action=calificaciones");
-        exit();
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
     }
 
     public function delete(): void {

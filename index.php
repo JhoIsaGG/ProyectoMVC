@@ -62,6 +62,14 @@ $router->add('logout', [$usuariosController, 'logout']);
 
 
 //Vistas específicas
+$router->add('curso_delete', [$cursosController, 'delete']);
+$router->add('curso_reactivate', [$cursosController, 'reactivate']);
+$router->add('cursos_por_nivel', [$cursosController, 'cursos_por_nivel']);
+$router->add('curso_dashboard', [$cursosController, 'curso_dashboard']);
+$router->add('curso_evaluaciones', [$cursosController, 'curso_evaluaciones']);
+$router->add('curso_asistencias', [$cursosController, 'curso_asistencias']);
+$router->add('curso_alumnos', [$cursosController, 'curso_alumnos']);
+$router->add('asistencia_batch', [$asistenciasController, 'asistencia_batch']);
 $router->add('usuario_search', [$usuariosController, 'search']);
 $router->add('curso_detalle', [$evaluacionesController, 'detalle']);
 
