@@ -22,9 +22,11 @@
                             <tr>
                                 <th>Tipo</th>
                                 <th>Nota Obtenida</th>
+                                <th>Observaciones</th>
                                 <th>Punteo Máximo</th>
                                 <th>Fecha Entrega</th>
-                                <th>Observaciones</th>
+                                <th>Actividad</th>
+                                <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -34,15 +36,27 @@
                                     <td>
                                         <?php 
                                         if (isset($ev['nota_obtenida'])) {
-                                            echo "<strong style='color:#4caf50;'>" . htmlspecialchars($ev['nota_obtenida']) . "</strong>";
+                                            echo "<strong>" . htmlspecialchars($ev['nota_obtenida']) . "</strong>";
                                         } else {
-                                            echo "<em style='color:#aaa'>Pendiente</em>";
+                                            echo "<em>Pendiente</em>";
                                         }
                                         ?>
                                     </td>
+                                    <td><?php echo htmlspecialchars($ev['observaciones_entrega'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($ev['punteo']); ?></td>
                                     <td><?php echo htmlspecialchars($ev['fecha_entrega'] ?? '—'); ?></td>
                                     <td><?php echo htmlspecialchars($ev['observaciones'] ?? '—'); ?></td>
+                                    <td>
+                                        <?php if ($ev['estado_entrega'] == 1 || isset($ev['nota_obtenida'])): ?>
+                                            <span style="color:#4caf50; font-weight:bold;">Entregado</span>
+                                        <?php else: ?>
+                                            <form action="index.php?action=entrega_create" method="POST" >
+                                                <input type="hidden" name="id_evaluacion" value="<?php echo htmlspecialchars($ev['id_evaluacion']); ?>">
+                                                <input type="hidden" name="id_alumno" value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>">
+                                                <button type="submit" class="btn btn-create-user">Entregar</button>
+                                            </form>
+                                        <?php endif; ?>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

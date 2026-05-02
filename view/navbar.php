@@ -6,20 +6,14 @@
             <?php if ($_SESSION['usuario']['id_rol'] == '1'): ?>
             <li><a href="index.php?action=home">Inicio</a></li>
             <li><a href="index.php?action=cursos">Cursos</a></li>
-            <li><a href="index.php?action=evaluaciones">Evaluaciones</a></li>
             <li><a href="index.php?action=idiomas">Idiomas</a></li>
-            <li><a href="index.php?action=inscripciones">Inscripciones</a></li>
             <li><a href="index.php?action=niveles">Niveles</a></li>
             <li><a href="index.php?action=alumnos">Alumnos</a></li>
             <li><a href="index.php?action=profesores">Profesores</a></li>
             <li><a href="index.php?action=usuarios">Usuarios</a></li>
             <li><a href="index.php?action=roles">Roles</a></li>
             <li><a href="index.php?action=tipos_evaluacion">Tipos Evaluación</a></li>
-            <li><a href="index.php?action=horarios">Horarios</a></li>
-            <li><a href="index.php?action=asistencias">Asistencias</a></li>
             <li><a href="index.php?action=aulas">Aulas</a></li>
-            <li><a href="index.php?action=entregas">Entregas</a></li>
-            <li><a href="index.php?action=calificaciones">Calificaciones</a></li>
             <?php elseif ($_SESSION['usuario']['id_rol'] == '2'): ?>
                 <li><a href="index.php?action=home">Inicio</a></li>
             <?php elseif ($_SESSION['usuario']['id_rol'] == '3'): ?>

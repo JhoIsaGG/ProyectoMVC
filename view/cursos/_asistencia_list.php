@@ -6,7 +6,6 @@ $fecha_fin_curso = new DateTime($curso['fecha_fin']);
 $hoy = new DateTime();
 $hoy->setTime(0, 0, 0); // Para comparar solo fechas
 
-// Mapear días de la semana de PHP (1 = Lunes, 7 = Domingo) a como estén en la BD (Asumiendo 1=Lunes, 2=Martes...)
 $dias_clase_bd = [];
 foreach ($horarios as $h) {
     $dias_clase_bd[] = (int)$h['dia_semana'];
@@ -49,7 +48,7 @@ if (!empty($dias_clase_bd)) {
         <?php 
         $es_activa = $clase['pasada_o_hoy'];
         $clase_css = $es_activa ? '' : 'opacity: 0.5; pointer-events: none;';
-        $badge = $es_activa ? '<span class="badge-active">Disponible</span>' : '<span class="badge-disabled">Futura (Inactiva)</span>';
+        $badge = $es_activa ? '' : '<span class="badge-disabled">Futura (Inactiva)</span>';
         ?>
         
         <div class="accordion-item" style="<?php echo $clase_css; ?>">
@@ -85,7 +84,7 @@ if (!empty($dias_clase_bd)) {
                                         $fecha_str = $clase['fecha_str'];
                                         $previo = $asistencias_previas[$fecha_str][$id_alum] ?? null;
                                         
-                                        $estado_sel = $previo ? $previo['estado'] : 1; // 1 por defecto (Presente)
+                                        $estado_sel = $previo ? $previo['estado'] : 0; // 1 por defecto (Presente)
                                         $obs_val = $previo ? $previo['observaciones'] : '';
                                     ?>
                                     <tr>
@@ -93,6 +92,7 @@ if (!empty($dias_clase_bd)) {
                                         <td>
                                             <!-- Estados: 1=Presente, 2=Ausente, 3=Justificado, 4=Tarde (Basado en AsistenciaModel) -->
                                             <select name="asistencia[<?php echo $id_alum; ?>][estado]" style="padding:5px; border-radius:4px;">
+                                                <option value="0" <?php echo ($estado_sel == 0) ? 'selected' : ''; ?>>Seleccionar...</option>
                                                 <option value="1" <?php echo ($estado_sel == 1) ? 'selected' : ''; ?>>Presente</option>
                                                 <option value="2" <?php echo ($estado_sel == 2) ? 'selected' : ''; ?>>Ausente</option>
                                                 <option value="4" <?php echo ($estado_sel == 4) ? 'selected' : ''; ?>>Llegada Tarde</option>

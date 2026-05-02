@@ -107,7 +107,10 @@ class EvaluacionesController {
                 return;
             }
         }
-        header("Location: index.php?action=evaluaciones");
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 
@@ -124,21 +127,30 @@ class EvaluacionesController {
                 return;
             }
         }
-        header("Location: index.php?action=evaluaciones");
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminarevaluacion((int)$codigo);
-        header("Location: index.php?action=evaluaciones");
+        echo "<script>
+                    window.history.go(-1);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 
     public function reactivate(): void {
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->reactivarevaluacion($codigo);
-        header("Location: index.php?action=evaluaciones");
+        echo "<script>
+                    window.history.go(-1);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 }

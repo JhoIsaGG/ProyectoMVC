@@ -23,7 +23,10 @@
             <div class="form-row">
                 <div class="form-col">
                     <label for="id_curso">Curso:</label>
-                    <select id="id_curso" name="id_curso" required>
+                    <?php if (isset($id_curso_preseleccionado) && $id_curso_preseleccionado): ?>
+                        <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($id_curso_preseleccionado); ?>">
+                    <?php endif; ?>
+                    <select id="id_curso" name="id_curso" <?php echo (isset($id_curso_preseleccionado) && $id_curso_preseleccionado) ? 'disabled' : 'required'; ?>>
                         <option value="">Seleccione un curso...</option>
                         <?php foreach ($cursos as $curso): ?>
                             <?php $selected = (isset($id_curso_preseleccionado) && $curso['id_curso'] == $id_curso_preseleccionado) ? 'selected' : ''; ?>
@@ -35,7 +38,10 @@
                 </div>
                 <div class="form-col">
                     <label for="id_tipo_evaluacion">Tipo de Evaluación:</label>
-                    <select id="id_tipo_evaluacion" name="id_tipo_evaluacion" required>
+                    <?php if (isset($id_tipo_preseleccionado) && $id_tipo_preseleccionado): ?>
+                        <input type="hidden" name="id_tipo_evaluacion" value="<?php echo htmlspecialchars($id_tipo_preseleccionado); ?>">
+                    <?php endif; ?>
+                    <select id="id_tipo_evaluacion" name="id_tipo_evaluacion" <?php echo (isset($id_tipo_preseleccionado) && $id_tipo_preseleccionado) ? 'disabled' : 'required'; ?>>
                         <option value="">Seleccione un tipo...</option>
                         <?php foreach ($tipos as $tipo): ?>
                             <?php $selected = (isset($id_tipo_preseleccionado) && $tipo['id_tipo_evaluacion'] == $id_tipo_preseleccionado) ? 'selected' : ''; ?>

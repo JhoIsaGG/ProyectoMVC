@@ -205,7 +205,10 @@ public function create():void{
             }
         }
     }
-    header("Location: index.php?action=usuarios");
+    echo "<script>
+            window.history.go(-2);
+            setTimeout(function(){ window.location.reload(); }, 100);
+          </script>";
     exit();
 }
 
@@ -253,7 +256,10 @@ public function update():void{
             return;
         }
     }
-    header("Location: index.php?action=usuarios");
+    echo "<script>
+            window.history.go(-2);
+            setTimeout(function(){ window.location.reload(); }, 100);
+          </script>";
     exit();
 }
 
@@ -265,7 +271,10 @@ public function update():void{
 public function delete():void{
     $codigo = $_POST['codigo'] ?? null;
     $this->modelo->eliminarUsuario($codigo);
-    header("Location: index.php?action=usuarios");
+    echo "<script>
+            window.history.go(-1);
+            setTimeout(function(){ window.location.reload(); }, 100);
+          </script>";
     exit();
 }
 
@@ -277,7 +286,10 @@ public function reactivate(): void {
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->reactivarUsuario($codigo);
         
-        header("Location: index.php?action=usuarios");
+        echo "<script>
+                window.history.go(-1);
+                setTimeout(function(){ window.location.reload(); }, 100);
+              </script>";
         exit();
     }
 }

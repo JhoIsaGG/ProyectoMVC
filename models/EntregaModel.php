@@ -73,6 +73,32 @@ class EntregaModel {
         return $result->fetch_assoc() ?: null;
     }
 
+    public function getEntregasByCurso(int $id_curso): array {
+        $sql = "SELECT en.*, 
+                       te.nombre AS nombre_tipo,
+                       c.nombre AS nombre_curso,
+                       CONCAT(u.nombres, ' ', u.apellidos) AS nombre_alumno,
+                       cal.nota AS punteo_obtenido
+                FROM entregas en
+                JOIN evaluaciones e ON en.id_evaluacion = e.id_evaluacion
+                JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
+                JOIN cursos c ON e.id_curso = c.id_curso
+                JOIN alumnos a ON en.id_alumno = a.id_alumno
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                LEFT JOIN calificaciones cal ON en.id_entrega = cal.id_entrega
+                WHERE e.id_curso = ?
+                ORDER BY en.fecha_entrega DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_curso);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
     public function crearentrega(array $datos): bool|string {
         $sql = "INSERT INTO entregas (id_evaluacion, id_alumno, fecha_entrega, estado) VALUES (?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);

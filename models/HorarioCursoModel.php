@@ -33,9 +33,10 @@ class HorarioCursoModel {
     }
 
     public function getHorariosByCurso(int $id_curso): array {
-        $sql = "SELECT h.*, au.nombre AS nombre_aula, au.capacidad AS capacidad_aula
+        $sql = "SELECT h.*, c.nombre AS nombre_curso, au.nombre AS nombre_aula, au.capacidad AS capacidad_aula
                 FROM horarios_curso h
-                JOIN aulas au ON h.id_aula = au.id_aula
+                JOIN cursos c ON h.id_curso = c.id_curso
+                JOIN aulas au ON c.id_aula = au.id_aula
                 WHERE h.id_curso = ?
                 ORDER BY h.dia_semana, h.hora_inicio";
         $stmt = $this->conexion->prepare($sql);

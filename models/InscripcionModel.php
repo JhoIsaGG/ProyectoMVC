@@ -24,6 +24,26 @@ class InscripcionModel {
         return $items;
     }
 
+    public function getInscripcionesByCurso(int $id_curso): array {
+        $sql = "SELECT i.*, CONCAT(u.nombres, ' ', u.apellidos) AS nombre_alumno,
+                       c.nombre AS nombre_curso
+                FROM inscripciones i
+                JOIN alumnos a ON i.id_alumno = a.id_alumno
+                JOIN usuarios u ON a.id_usuario = u.id_usuario
+                JOIN cursos c ON i.id_curso = c.id_curso
+                WHERE i.id_curso = ?
+                ORDER BY i.id_inscripcion DESC";
+        $stmt = $this->conexion->prepare($sql);
+        $stmt->bind_param("i", $id_curso);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $items = [];
+        while ($row = $result->fetch_assoc()) {
+            $items[] = $row;
+        }
+        return $items;
+    }
+
     public function getinscripcionById(int $id): ?array {
         $sql = "SELECT * FROM inscripciones WHERE id_inscripcion = ?";
         $stmt = $this->conexion->prepare($sql);

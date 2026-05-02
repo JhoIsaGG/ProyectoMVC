@@ -131,10 +131,10 @@ class CursoModel {
         return $result->fetch_assoc() ?: null;
     }
 
-    public function crearcurso(array $datos): bool|string {
+    public function crearcurso(array $datos): int|string {
         $sql = "INSERT INTO cursos (nombre, id_idioma, id_nivel, id_profesor, id_aula, fecha_inicio, fecha_fin, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
-        if (!$stmt) return false;
+        if (!$stmt) return "Error preparando la consulta.";
         
         $datos['estado'] = 1;
         
@@ -142,10 +142,10 @@ class CursoModel {
         
         try {
             $stmt->execute();
-            return true;
+            return $stmt->insert_id;
         } catch (mysqli_sql_exception $e) {
             if ($e->getCode() == 1062) return "Registro duplicado.";
-            return false;
+            return $e->getMessage();
         }
     }
 

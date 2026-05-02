@@ -49,15 +49,27 @@
                         </thead>
                         <tbody>
                             <?php foreach ($inscripciones_curso as $ins): ?>
-                                <tr class="element-user">
+                                <tr class="element-user <?php echo $ins['estado'] == 0 ? 'inactive-element' : ''; ?>">
                                     <td><?php echo $ins['id_alumno']; ?></td>
-                                    <td><?php echo htmlspecialchars($ins['nombre_alumno']); ?></td>
+                                    <td>
+                                        <?php echo htmlspecialchars($ins['nombre_alumno']); ?>
+                                        <?php if ($ins['estado'] == 0): ?>
+                                            <span style="color: #ff6b6b; font-size: 0.8em; margin-left: 10px;">(Inactivo)</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo htmlspecialchars($ins['fecha_inscripcion']); ?></td>
                                     <td>
-                                        <form action="index.php?action=inscripcion_delete" method="POST" style="display:inline;">
-                                            <input type="hidden" name="codigo" value="<?php echo $ins['id_inscripcion']; ?>">
-                                            <button class="btn btn-delete-sm" type="submit" onclick="return confirm('¿Desactivar/Expulsar a este alumno del curso?');">Desactivar</button>
-                                        </form>
+                                        <?php if ($ins['estado'] == 1): ?>
+                                            <form action="index.php?action=inscripcion_delete" method="POST" style="display:inline;">
+                                                <input type="hidden" name="codigo" value="<?php echo $ins['id_inscripcion']; ?>">
+                                                <button class="btn btn-delete-sm" type="submit" onclick="return confirm('¿Desactivar/Expulsar a este alumno del curso?');">Desactivar</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <form action="index.php?action=inscripcion_reactivate" method="POST" style="display:inline;">
+                                                <input type="hidden" name="codigo" value="<?php echo $ins['id_inscripcion']; ?>">
+                                                <button class="btn btn-edit-sm" type="submit" style="background-color: #ffd166; color: #1a1a2e;" onclick="return confirm('¿Reactivar la inscripción de este alumno?');">Reactivar</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

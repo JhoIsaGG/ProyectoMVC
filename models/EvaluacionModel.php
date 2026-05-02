@@ -40,7 +40,7 @@ class EvaluacionModel {
     }
 
     public function getEvaluacionesConNotas(int $id_curso, int $id_alumno): array {
-        $sql = "SELECT e.*, te.nombre AS nombre_tipo, c.nota AS nota_obtenida
+        $sql = "SELECT e.*, te.nombre AS nombre_tipo, c.nota AS nota_obtenida, en.estado AS estado_entrega, c.comentarios_profesor AS observaciones_entrega
                 FROM evaluaciones e
                 JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
                 LEFT JOIN entregas en ON e.id_evaluacion = en.id_evaluacion AND en.id_alumno = ?

@@ -101,5 +101,15 @@
     <footer>
         <p>&copy; 2026 Academia de Idiomas. Todos los derechos reservados.</p>
     </footer>
+    <script>
+        function toggleAccordion(element) {
+            var parent = element.parentElement;
+            parent.classList.toggle("active");
+            var symbol = element.querySelector("span");
+            if (symbol) {
+                symbol.innerHTML = parent.classList.contains("active") ? "▲" : "▼";
+            }
+        }
+    </script>
 </body>
 </html>

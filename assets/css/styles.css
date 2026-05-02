@@ -743,8 +743,15 @@ iframe {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Accordion para Evaluaciones y Asistencias */
@@ -791,9 +798,49 @@ iframe {
 .table-inner {
     background: rgba(255, 255, 255, 0.05);
 }
+
 .table-inner th {
     background: rgba(0, 0, 0, 0.2);
 }
+
 .table-inner td {
     color: white;
+}
+
+.dashboard-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.dashboard-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    padding: 40px 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    color: white;
+    display: block;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffd166;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-icon {
+    font-size: 3em;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.dashboard-title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffd166;
 }

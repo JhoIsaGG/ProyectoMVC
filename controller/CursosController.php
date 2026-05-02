@@ -86,9 +86,9 @@ class CursosController {
         $tipos_evaluacion = $this->tipoEvaluacionModelo->getTipoEvaluacionModels();
         $evaluaciones_curso = $this->evaluacionModelo->getEvaluacionesByCurso((int)$id_curso);
         
-        $todas_entregas = $this->entregaModelo->getEntregaModels();
+        $todas_entregas_curso = $this->entregaModelo->getEntregasByCurso((int)$id_curso);
         $entregas_por_evaluacion = [];
-        foreach ($todas_entregas as $ent) {
+        foreach ($todas_entregas_curso as $ent) {
             $entregas_por_evaluacion[$ent['id_evaluacion']][] = $ent;
         }
         
@@ -104,13 +104,8 @@ class CursosController {
         $curso = $this->modelo->getcursoById((int)$id_curso);
         
         $todos_los_alumnos = $this->alumnoModelo->getAlumnoModels();
-        $inscripciones_curso = [];
-        $todas_inscripciones = $this->inscripcionModelo->getInscripcionModels();
-        foreach ($todas_inscripciones as $ins) {
-            if ($ins['id_curso'] == $id_curso && $ins['estado'] == 1) {
-                $inscripciones_curso[] = $ins;
-            }
-        }
+        // Usamos el método optimizado
+        $inscripciones_curso = $this->inscripcionModelo->getInscripcionesByCurso((int)$id_curso);
         
         include __DIR__ ."/../view/cursos/curso_alumnos.php";
     }
@@ -123,33 +118,20 @@ class CursosController {
         }
         $curso = $this->modelo->getcursoById((int)$id_curso);
         
-        $horarios = [];
-        $todos_horarios = $this->horarioModelo->getHorarioCursoModels();
-        foreach ($todos_horarios as $h) {
-            if ($h['id_curso'] == $id_curso) {
-                $horarios[] = $h;
-            }
-        }
+        // Carga optimizada
+        $horarios = $this->horarioModelo->getHorariosByCurso((int)$id_curso);
         
         $asistencias_previas = [];
-        $todas_asistencias = $this->asistenciaModelo->getAsistenciaModels();
-        foreach ($todas_asistencias as $as) {
-            if ($as['id_curso'] == $id_curso) {
-                $asistencias_previas[$as['fecha']][$as['id_alumno']] = [
-                    'estado' => $as['estado'],
-                    'observaciones' => $as['observaciones']
-                ];
-            }
+        $asistencias_curso = $this->asistenciaModelo->getAsistenciasByCurso((int)$id_curso);
+        foreach ($asistencias_curso as $as) {
+            $asistencias_previas[$as['fecha']][$as['id_alumno']] = [
+                'estado' => $as['estado'],
+                'observaciones' => $as['observaciones']
+            ];
         }
         
         // Necesitamos la lista de alumnos inscritos para tomar la asistencia
-        $inscripciones_curso = [];
-        $todas_inscripciones = $this->inscripcionModelo->getInscripcionModels();
-        foreach ($todas_inscripciones as $ins) {
-            if ($ins['id_curso'] == $id_curso && $ins['estado'] == 1) {
-                $inscripciones_curso[] = $ins;
-            }
-        }
+        $inscripciones_curso = $this->inscripcionModelo->getInscripcionesByCurso((int)$id_curso);
 
         include __DIR__ ."/../view/cursos/curso_asistencias.php";
     }
@@ -164,66 +146,131 @@ class CursosController {
 
     public function edit(): void {
         $codigo = $_GET['codigo'] ?? null;
-        if (!$codigo) {
-            header("Location: index.php?action=cursos");
-            exit();
+        if (!$codigo) { 
+            header("Location: index.php?action=cursos"); 
+            exit(); 
         }
-        $curso = $this->modelo->getcursoById($codigo);
-        if (!$curso) {
-            header("Location: index.php?action=cursos");
-            exit();
+        $curso = $this->modelo->getcursoById((int)$codigo);
+        if (!$curso) { 
+            header("Location: index.php?action=cursos"); 
+            exit(); 
         }
+        
         $idiomas = $this->idiomaModelo->getIdiomaModels();
         $niveles = $this->nivelModelo->getNivelModels();
         $profesores = $this->profesorModelo->getProfesorModels();
-        $aulas = $this->aulaModelo->getAulasActivas();
+        $aulas = $this->aulaModelo->getAulaModels();
+
+        // Obtener el horario único del curso (si tiene)
+        $horarios = $this->horarioModelo->getHorariosByCurso((int)$codigo);
+        $horario_actual = !empty($horarios) ? $horarios[0] : null;
+
         include __DIR__ ."/../view/cursos/edit.php";
     }
 
     public function create(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->crearcurso($_POST);
-            if ($exito !== true) {
-                $error = is_string($exito) ? $exito : "Error al crear.";
+            
+            if (is_int($exito)) { // Si es int, es el ID insertado
+                // Insertar el horario
+                $datosHorario = [
+                    'id_curso' => $exito,
+                    'dia_semana' => $_POST['dia_semana'] ?? 1,
+                    'hora_inicio' => $_POST['hora_inicio'] ?? '00:00:00',
+                    'hora_fin' => $_POST['hora_fin'] ?? '00:00:00'
+                ];
+                $this->horarioModelo->crearhorario($datosHorario);
+                
+                echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                      </script>";
+                exit();
+            } else {
+                $error = is_string($exito) ? $exito : "Error al crear el curso.";
                 $idiomas = $this->idiomaModelo->getIdiomaModels();
                 $niveles = $this->nivelModelo->getNivelModels();
                 $profesores = $this->profesorModelo->getProfesorModels();
+                $aulas = $this->aulaModelo->getAulaModels();
                 include __DIR__ ."/../view/cursos/new.php";
                 return;
             }
         }
-        header("Location: index.php?action=cursos");
+        echo "<script>
+                window.history.go(-1);
+                setTimeout(function(){ window.location.reload(); }, 100);
+              </script>";
         exit();
     }
 
     public function update(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->actualizarcurso($_POST);
-            if ($exito !== true) {
+            
+            if ($exito === true) {
+                // Actualizar o crear el horario
+                $id_curso = (int)$_POST['id_curso'];
+                $id_horario = $_POST['id_horario'] ?? null;
+                
+                $datosHorario = [
+                    'id_curso' => $id_curso,
+                    'dia_semana' => $_POST['dia_semana'] ?? 1,
+                    'hora_inicio' => $_POST['hora_inicio'] ?? '00:00:00',
+                    'hora_fin' => $_POST['hora_fin'] ?? '00:00:00'
+                ];
+
+                if (!empty($id_horario)) {
+                    $datosHorario['id_horario'] = (int)$id_horario;
+                    $this->horarioModelo->actualizarhorario($datosHorario);
+                } else {
+                    $this->horarioModelo->crearhorario($datosHorario);
+                }
+
+                echo "<script>
+                        window.history.go(-2);
+                        setTimeout(function(){ window.location.reload(); }, 100);
+                      </script>";
+                exit();
+            } else {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
                 $curso = $_POST;
                 $idiomas = $this->idiomaModelo->getIdiomaModels();
                 $niveles = $this->nivelModelo->getNivelModels();
                 $profesores = $this->profesorModelo->getProfesorModels();
+                $aulas = $this->aulaModelo->getAulaModels();
+                
+                $horarios = $this->horarioModelo->getHorariosByCurso((int)$curso['id_curso']);
+                $horario_actual = !empty($horarios) ? $horarios[0] : null;
+                
                 include __DIR__ ."/../view/cursos/edit.php";
                 return;
             }
         }
-        header("Location: index.php?action=cursos");
+        echo "<script>
+                window.history.go(-1);
+                setTimeout(function(){ window.location.reload(); }, 100);
+              </script>";
         exit();
     }
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->eliminarcurso($codigo);
-        header("Location: index.php?action=cursos");
+        $this->modelo->eliminarcurso((int)$codigo);
+        echo "<script>
+                window.history.go(-1);
+                setTimeout(function(){ window.location.reload(); }, 100);
+              </script>";
         exit();
     }
 
     public function reactivate(): void {
         $codigo = $_POST['codigo'] ?? null;
-        $this->modelo->reactivarcurso($codigo);
-        header("Location: index.php?action=cursos");
+        $this->modelo->reactivarcurso((int)$codigo);
+        echo "<script>
+                window.history.go(-1);
+                setTimeout(function(){ window.location.reload(); }, 100);
+              </script>";
         exit();
     }
 }

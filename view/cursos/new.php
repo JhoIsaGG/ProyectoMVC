@@ -35,10 +35,16 @@
             </div>
             <div class="form-col">
                 <label for="id_nivel">Nivel:</label>
-                <select id="id_nivel" name="id_nivel" required>
+                <?php $nivel_get = $_GET['id_nivel'] ?? null; ?>
+                <?php if ($nivel_get): ?>
+                    <input type="hidden" name="id_nivel" value="<?php echo htmlspecialchars($nivel_get); ?>">
+                <?php endif; ?>
+                <select id="id_nivel" name="id_nivel" <?php echo $nivel_get ? 'disabled' : 'required'; ?>>
                     <option value="">Seleccione un nivel...</option>
                     <?php foreach ($niveles as $nivel): ?>
-                        <option value="<?php echo htmlspecialchars($nivel['id_nivel']); ?>"><?php echo htmlspecialchars($nivel['nombre']); ?></option>
+                        <option value="<?php echo htmlspecialchars($nivel['id_nivel']); ?>" <?php echo ($nivel_get == $nivel['id_nivel']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($nivel['nombre']); ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
             </div>
@@ -67,10 +73,38 @@
                 <input type="date" id="fecha_inicio" name="fecha_inicio" required>
             </div>
             <div class="form-col">
-                <label for="fecha_fin">Fecha_fin:</label>
+                <label for="fecha_fin">Fecha Fin:</label>
                 <input type="date" id="fecha_fin" name="fecha_fin" required>
             </div>
-            <div class="form-col">
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <h3 style="color: #ffd166; margin-bottom: 15px;">Horario del Curso</h3>
+
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-col" style="flex: 1;">
+                    <label for="dia_semana">Día de la semana:</label>
+                    <select id="dia_semana" name="dia_semana" required>
+                        <option value="">Seleccione un día...</option>
+                        <option value="1">Lunes</option>
+                        <option value="2">Martes</option>
+                        <option value="3">Miércoles</option>
+                        <option value="4">Jueves</option>
+                        <option value="5">Viernes</option>
+                        <option value="6">Sábado</option>
+                        <option value="7">Domingo</option>
+                    </select>
+                </div>
+                <div class="form-col" style="flex: 1;">
+                    <label for="hora_inicio">Hora Inicio:</label>
+                    <input type="time" id="hora_inicio" name="hora_inicio" required>
+                </div>
+                <div class="form-col" style="flex: 1;">
+                    <label for="hora_fin">Hora Fin:</label>
+                    <input type="time" id="hora_fin" name="hora_fin" required>
+                </div>
+            </div>
+
+            <div class="form-col" style="margin-top: 20px;">
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado">
                     <option value="1">Activo</option>
@@ -78,7 +112,7 @@
                 </select>
             </div>
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=cursos">Cancelar</a>
+                <a class="btn btn-cancel" href="javascript:history.back()">Cancelar</a>
                 <button class="btn btn-submit" type="submit">Guardar</button>
             </div>
         </form>

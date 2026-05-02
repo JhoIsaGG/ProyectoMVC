@@ -55,13 +55,17 @@ class InscripcionesController {
                 return;
             }
         }
-        header("Location: index.php?action=inscripciones");
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 
     public function update(): void {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $exito = $this->modelo->actualizarinscripcion($_POST);
+            
             if ($exito !== true) {
                 $error = is_string($exito) ? $exito : "Error al actualizar.";
                 $inscripcion = $_POST;
@@ -71,14 +75,30 @@ class InscripcionesController {
                 return;
             }
         }
-        header("Location: index.php?action=inscripciones");
+        echo "<script>
+                    window.history.go(-2);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 
     public function delete(): void {
         $codigo = $_POST['codigo'] ?? null;
         $this->modelo->eliminarinscripcion((int)$codigo);
-        header("Location: index.php?action=inscripciones");
+        echo "<script>
+                    window.history.go(-1);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
+        exit();
+    }
+
+    public function reactivate(): void {
+        $codigo = $_POST['codigo'] ?? null;
+        $this->modelo->reactivarinscripcion((int)$codigo);
+        echo "<script>
+                    window.history.go(-1);
+                    setTimeout(function(){ window.location.reload(); }, 100);
+                </script>";
         exit();
     }
 }

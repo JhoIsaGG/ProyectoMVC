@@ -61,8 +61,6 @@ $router->add('usuario_login', [$usuariosController, 'login']);
 $router->add('logout', [$usuariosController, 'logout']);
 
 
-//Vistas específicas
-$router->add('curso_delete', [$cursosController, 'delete']);
 $router->add('curso_reactivate', [$cursosController, 'reactivate']);
 $router->add('cursos_por_nivel', [$cursosController, 'cursos_por_nivel']);
 $router->add('curso_dashboard', [$cursosController, 'curso_dashboard']);

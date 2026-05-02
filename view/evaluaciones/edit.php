@@ -24,7 +24,8 @@
             <div class="form-row">
                 <div class="form-col">
                     <label for="id_curso">Curso:</label>
-                    <select id="id_curso" name="id_curso" required>
+                    <input type="hidden" name="id_curso" value="<?php echo htmlspecialchars($evaluacion['id_curso']); ?>">
+                    <select id="id_curso" name="id_curso" disabled>
                         <option value="">Seleccione un curso...</option>
                         <?php foreach ($cursos as $curso): ?>
                             <option value="<?php echo htmlspecialchars($curso['id_curso']); ?>" <?php echo ($evaluacion['id_curso'] == $curso['id_curso']) ? 'selected' : ''; ?>>
@@ -35,7 +36,8 @@
                 </div>
                 <div class="form-col">
                     <label for="id_tipo_evaluacion">Tipo de Evaluación:</label>
-                    <select id="id_tipo_evaluacion" name="id_tipo_evaluacion" required>
+                    <input type="hidden" name="id_tipo_evaluacion" value="<?php echo htmlspecialchars($evaluacion['id_tipo_evaluacion']); ?>">
+                    <select id="id_tipo_evaluacion" name="id_tipo_evaluacion" disabled>
                         <option value="">Seleccione un tipo...</option>
                         <?php foreach ($tipos as $tipo): ?>
                             <option value="<?php echo htmlspecialchars($tipo['id_tipo_evaluacion']); ?>" <?php echo ($evaluacion['id_tipo_evaluacion'] == $tipo['id_tipo_evaluacion']) ? 'selected' : ''; ?>>

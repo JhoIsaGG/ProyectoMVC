@@ -11,10 +11,13 @@
 
     <main style="margin-top: 100px; padding: 30px;">
         <div class="mainContainer">
-            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
                 <div>
                     <a href="index.php?action=home" class="btn btn-cancel" style="display:inline-block; margin-bottom: 15px;">← Volver a Niveles</a>
                     <h2 class="user-management-title">Cursos del nivel: <?php echo htmlspecialchars($nivel['nombre']); ?></h2>
+                </div>
+                <div>
+                    <a href="index.php?action=curso_new&id_nivel=<?php echo urlencode($nivel['id_nivel']); ?>" class="btn btn-create">➕ Crear Curso</a>
                 </div>
             </div>
 
@@ -39,6 +42,20 @@
                                     <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
                                 </div>
                             </a>
+                            <div style="display: flex; gap: 10px; margin-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 15px;">
+                                <a href="index.php?action=curso_edit&codigo=<?php echo $curso['id_curso']; ?>" class="btn btn-edit-sm" style="flex: 1; text-align: center;">Editar</a>
+                                <?php if ($curso['estado'] == 1): ?>
+                                    <form action="index.php?action=curso_delete" method="POST" style="flex: 1; margin: 0;">
+                                        <input type="hidden" name="codigo" value="<?php echo $curso['id_curso']; ?>">
+                                        <button class="btn btn-delete-sm" type="submit" style="width: 100%;" onclick="return confirm('¿Seguro que desea desactivar este curso?');">Desactivar</button>
+                                    </form>
+                                <?php else: ?>
+                                    <form action="index.php?action=curso_reactivate" method="POST" style="flex: 1; margin: 0;">
+                                        <input type="hidden" name="codigo" value="<?php echo $curso['id_curso']; ?>">
+                                        <button class="btn btn-edit-sm" type="submit" style="width: 100%; background-color: #ffd166; color: #1a1a2e;" onclick="return confirm('¿Seguro que desea reactivar este curso?');">Reactivar</button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>

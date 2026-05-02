@@ -76,10 +76,42 @@
                 <input type="date" id="fecha_inicio" name="fecha_inicio" value="<?php echo htmlspecialchars($curso['fecha_inicio']); ?>" required>
             </div>
             <div class="form-col">
-                <label for="fecha_fin">Fecha_fin:</label>
+                <label for="fecha_fin">Fecha Fin:</label>
                 <input type="date" id="fecha_fin" name="fecha_fin" value="<?php echo htmlspecialchars($curso['fecha_fin']); ?>" required>
             </div>
-            <div class="form-col">
+
+            <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <h3 style="color: #ffd166; margin-bottom: 15px;">Horario del Curso</h3>
+
+            <?php if (isset($horario_actual)): ?>
+                <input type="hidden" name="id_horario" value="<?php echo htmlspecialchars($horario_actual['id_horario']); ?>">
+            <?php endif; ?>
+
+            <div class="form-row" style="display: flex; gap: 15px;">
+                <div class="form-col" style="flex: 1;">
+                    <label for="dia_semana">Día de la semana:</label>
+                    <select id="dia_semana" name="dia_semana" required>
+                        <option value="">Seleccione un día...</option>
+                        <option value="1" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 1) ? 'selected' : ''; ?>>Lunes</option>
+                        <option value="2" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 2) ? 'selected' : ''; ?>>Martes</option>
+                        <option value="3" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 3) ? 'selected' : ''; ?>>Miércoles</option>
+                        <option value="4" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 4) ? 'selected' : ''; ?>>Jueves</option>
+                        <option value="5" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 5) ? 'selected' : ''; ?>>Viernes</option>
+                        <option value="6" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 6) ? 'selected' : ''; ?>>Sábado</option>
+                        <option value="7" <?php echo (isset($horario_actual) && $horario_actual['dia_semana'] == 7) ? 'selected' : ''; ?>>Domingo</option>
+                    </select>
+                </div>
+                <div class="form-col" style="flex: 1;">
+                    <label for="hora_inicio">Hora Inicio:</label>
+                    <input type="time" id="hora_inicio" name="hora_inicio" value="<?php echo isset($horario_actual) ? htmlspecialchars($horario_actual['hora_inicio']) : ''; ?>" required>
+                </div>
+                <div class="form-col" style="flex: 1;">
+                    <label for="hora_fin">Hora Fin:</label>
+                    <input type="time" id="hora_fin" name="hora_fin" value="<?php echo isset($horario_actual) ? htmlspecialchars($horario_actual['hora_fin']) : ''; ?>" required>
+                </div>
+            </div>
+
+            <div class="form-col" style="margin-top: 20px;">
                 <label for="estado">Estado:</label>
                 <select id="estado" name="estado">
                     <option value="1" <?php echo ($curso['estado'] == 1) ? 'selected' : ''; ?>>Activo</option>
@@ -87,7 +119,7 @@
                 </select>
             </div>
             <div class="form-actions">
-                <a class="btn btn-cancel" href="index.php?action=cursos">Cancelar</a>
+                <a class="btn btn-cancel" href="javascript:history.back()">Cancelar</a>
                 <button class="btn btn-update" type="submit">Actualizar</button>
             </div>
         </form>
