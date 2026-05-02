@@ -26,6 +26,7 @@
                         <th>Idioma</th>
                         <th>Nivel</th>
                         <th>Profesor</th>
+                        <th>Aula</th>
                         <th>Fecha Inicio</th>
                         <th>Fecha Fin</th>
                         <th>Estado</th>
@@ -41,6 +42,7 @@
                                 <td><?php echo htmlspecialchars($item['nombre_idioma']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre_nivel']); ?></td>
                                 <td><?php echo htmlspecialchars($item['nombre_profesor']); ?></td>
+                                <td><?php echo htmlspecialchars($item['nombre_aula']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_inicio']); ?></td>
                                 <td><?php echo htmlspecialchars($item['fecha_fin']); ?></td>
                                 <td>

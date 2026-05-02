@@ -3,6 +3,7 @@ require_once __DIR__ ."/../models/CursoModel.php";
 require_once __DIR__ ."/../models/IdiomaModel.php";
 require_once __DIR__ ."/../models/NivelModel.php";
 require_once __DIR__ ."/../models/ProfesorModel.php";
+require_once __DIR__ ."/../models/AulaModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class CursosController {
@@ -10,6 +11,7 @@ class CursosController {
     private $idiomaModelo;
     private $nivelModelo;
     private $profesorModelo;
+    private $aulaModelo;
 
     public function __construct() {
         $conexion = (new Conexion())->conectar();
@@ -17,6 +19,7 @@ class CursosController {
         $this->idiomaModelo = new IdiomaModel($conexion);
         $this->nivelModelo = new NivelModel($conexion);
         $this->profesorModelo = new ProfesorModel($conexion);
+        $this->aulaModelo = new AulaModel($conexion);
     }
 
     public function index(): void {
@@ -28,6 +31,7 @@ class CursosController {
         $idiomas = $this->idiomaModelo->getIdiomaModels();
         $niveles = $this->nivelModelo->getNivelModels();
         $profesores = $this->profesorModelo->getProfesorModels();
+        $aulas = $this->aulaModelo->getAulasActivas();
         include __DIR__ ."/../view/cursos/new.php";
     }
 
@@ -45,6 +49,7 @@ class CursosController {
         $idiomas = $this->idiomaModelo->getIdiomaModels();
         $niveles = $this->nivelModelo->getNivelModels();
         $profesores = $this->profesorModelo->getProfesorModels();
+        $aulas = $this->aulaModelo->getAulasActivas();
         include __DIR__ ."/../view/cursos/edit.php";
     }
 

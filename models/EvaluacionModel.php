@@ -43,7 +43,8 @@ class EvaluacionModel {
         $sql = "SELECT e.*, te.nombre AS nombre_tipo, c.nota AS nota_obtenida
                 FROM evaluaciones e
                 JOIN tipos_evaluacion te ON e.id_tipo_evaluacion = te.id_tipo_evaluacion
-                LEFT JOIN calificaciones c ON e.id_evaluacion = c.id_evaluacion AND c.id_alumno = ?
+                LEFT JOIN entregas en ON e.id_evaluacion = en.id_evaluacion AND en.id_alumno = ?
+                LEFT JOIN calificaciones c ON en.id_entrega = c.id_entrega
                 WHERE e.id_curso = ? AND e.estado = 1
                 ORDER BY e.id_evaluacion DESC";
         $stmt = $this->conexion->prepare($sql);

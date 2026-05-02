@@ -119,18 +119,30 @@ CREATE TABLE evaluaciones (
     FOREIGN KEY (id_tipo_evaluacion) REFERENCES tipos_evaluacion(id_tipo_evaluacion)
 );
 
-CREATE TABLE calificaciones (
-    id_calificacion INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE entregas (
+    id_entrega INT AUTO_INCREMENT PRIMARY KEY,
     id_evaluacion INT NOT NULL,
     id_alumno INT NOT NULL,
+    fecha_entrega DATETIME DEFAULT CURRENT_TIMESTAMP,
+    estado BOOLEAN DEFAULT TRUE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_evaluacion) REFERENCES evaluaciones(id_evaluacion),
+    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno)
+);
+
+CREATE TABLE calificaciones (
+    id_calificacion INT AUTO_INCREMENT PRIMARY KEY,
+    id_entrega INT NOT NULL,
     nota DECIMAL(5,2) NOT NULL,
     comentarios_profesor TEXT,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_evaluacion) REFERENCES evaluaciones(id_evaluacion),
-    FOREIGN KEY (id_alumno) REFERENCES alumnos(id_alumno),
-    UNIQUE (id_evaluacion, id_alumno)
+    FOREIGN KEY (id_entrega) REFERENCES entregas(id_entrega),
+    UNIQUE (id_entrega)
 );
+
+
 
 CREATE TABLE asistencias (
     id_asistencia INT AUTO_INCREMENT PRIMARY KEY,

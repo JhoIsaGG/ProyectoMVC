@@ -18,6 +18,7 @@
             <li><a href="index.php?action=horarios">Horarios</a></li>
             <li><a href="index.php?action=asistencias">Asistencias</a></li>
             <li><a href="index.php?action=aulas">Aulas</a></li>
+            <li><a href="index.php?action=entregas">Entregas</a></li>
             <li><a href="index.php?action=calificaciones">Calificaciones</a></li>
             <?php elseif ($_SESSION['usuario']['id_rol'] == '2'): ?>
                 <li><a href="index.php?action=home">Inicio</a></li>

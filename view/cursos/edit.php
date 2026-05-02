@@ -51,9 +51,22 @@
                 <label for="id_profesor">Profesor:</label>
                 <select id="id_profesor" name="id_profesor" required>
                     <option value="">Seleccione un profesor...</option>
-                    <?php foreach ($profesores as $prof): ?>
-                        <option value="<?php echo htmlspecialchars($prof['id_profesor']); ?>" <?php echo ($curso['id_profesor'] == $prof['id_profesor']) ? 'selected' : ''; ?>>
-                            <?php echo htmlspecialchars($prof['id_profesor'] . ' - ' . $prof['nombres'] . ' ' . $prof['apellidos']); ?>
+                    <?php foreach ($profesores as $profesor): ?>
+                        <option value="<?php echo htmlspecialchars($profesor['id_profesor']); ?>" 
+                            <?php echo ($curso['id_profesor'] == $profesor['id_profesor']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($profesor['id_profesor'] . " - " . $profesor['nombres'] . " " . $profesor['apellidos']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="form-col">
+                <label for="id_aula">Aula:</label>
+                <select id="id_aula" name="id_aula" required>
+                    <option value="">Seleccione un aula...</option>
+                    <?php foreach ($aulas as $aula): ?>
+                        <option value="<?php echo htmlspecialchars($aula['id_aula']); ?>"
+                            <?php echo ($curso['id_aula'] == $aula['id_aula']) ? 'selected' : ''; ?>>
+                            <?php echo htmlspecialchars($aula['nombre'] . " (Capacidad: " . $aula['capacidad'] . ")"); ?>
                         </option>
                     <?php endforeach; ?>
                 </select>

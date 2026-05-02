@@ -29,17 +29,6 @@
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-col">
-                    <label for="id_aula">Aula:</label>
-                    <select id="id_aula" name="id_aula" required>
-                        <option value="">Seleccione un aula...</option>
-                        <?php foreach ($aulas as $aula): ?>
-                            <option value="<?php echo htmlspecialchars($aula['id_aula']); ?>">
-                                <?php echo htmlspecialchars($aula['nombre'] . ' (cap. ' . $aula['capacidad'] . ')'); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
             </div>
             <div class="form-row">
                 <div class="form-col">

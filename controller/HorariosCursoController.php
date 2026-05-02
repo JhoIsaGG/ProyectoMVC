@@ -1,21 +1,18 @@
 <?php
-require_once __DIR__ ."/../models/HorarioCursoModel.php";
 require_once __DIR__ ."/../models/CursoModel.php";
-require_once __DIR__ ."/../models/AulaModel.php";
 require_once __DIR__ ."/../models/ProfesorModel.php";
 require_once __DIR__ ."/../models/Conexion.php";
 
 class HorariosCursoController {
     private $modelo;
     private $cursoModelo;
-    private $aulaModelo;
     private $profesorModelo;
 
     public function __construct() {
         $conexion = (new Conexion())->conectar();
+        require_once __DIR__ ."/../models/HorarioCursoModel.php";
         $this->modelo          = new HorarioCursoModel($conexion);
         $this->cursoModelo     = new CursoModel($conexion);
-        $this->aulaModelo      = new AulaModel($conexion);
         $this->profesorModelo  = new ProfesorModel($conexion);
     }
 
@@ -39,7 +36,6 @@ class HorariosCursoController {
 
     public function new(): void {
         $cursos = $this->getCursosSegunRol();
-        $aulas  = $this->aulaModelo->getAulasActivas();
         $dias   = HorarioCursoModel::DIAS;
         include __DIR__ ."/../view/horarios_curso/new.php";
     }
@@ -50,7 +46,6 @@ class HorariosCursoController {
         $horario = $this->modelo->gethorarioById($codigo);
         if (!$horario) { header("Location: index.php?action=horarios"); exit(); }
         $cursos = $this->getCursosSegunRol();
-        $aulas  = $this->aulaModelo->getAulasActivas();
         $dias   = HorarioCursoModel::DIAS;
         include __DIR__ ."/../view/horarios_curso/edit.php";
     }

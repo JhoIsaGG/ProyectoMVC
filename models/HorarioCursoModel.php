@@ -17,14 +17,11 @@ class HorarioCursoModel {
     }
 
     public function getHorarioCursoModels(): array {
-        $sql = "SELECT h.*,
-                       c.nombre AS nombre_curso,
-                       au.nombre AS nombre_aula,
-                       au.capacidad AS capacidad_aula
-                FROM horarios_curso h
-                JOIN cursos c ON h.id_curso = c.id_curso
-                JOIN aulas au ON h.id_aula = au.id_aula
-                ORDER BY h.id_curso, h.dia_semana, h.hora_inicio";
+        $sql = "SELECT hc.*, c.nombre AS nombre_curso, a.nombre AS nombre_aula, a.capacidad AS capacidad_aula
+                FROM horarios_curso hc
+                JOIN cursos c ON hc.id_curso = c.id_curso
+                JOIN aulas a ON c.id_aula = a.id_aula
+                ORDER BY hc.id_horario DESC";
         $stmt = $this->conexion->prepare($sql);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -66,40 +63,33 @@ class HorarioCursoModel {
     }
 
     public function crearhorario(array $datos): bool|string {
-        $sql = "INSERT INTO horarios_curso (id_curso, id_aula, dia_semana, hora_inicio, hora_fin) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO horarios_curso (id_curso, dia_semana, hora_inicio, hora_fin) VALUES (?, ?, ?, ?)";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
-        $stmt->bind_param("iiiss",
-            $datos['id_curso'],
-            $datos['id_aula'],
-            $datos['dia_semana'],
-            $datos['hora_inicio'],
-            $datos['hora_fin']
-        );
+        
+        $stmt->bind_param("iiss", $datos['id_curso'], $datos['dia_semana'], $datos['hora_inicio'], $datos['hora_fin']);
+        
         try {
             $stmt->execute();
             return true;
         } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) return "Choque de horario detectado.";
             return false;
         }
     }
 
     public function actualizarhorario(array $datos): bool|string {
-        $sql = "UPDATE horarios_curso SET id_curso = ?, id_aula = ?, dia_semana = ?, hora_inicio = ?, hora_fin = ? WHERE id_horario = ?";
+        $sql = "UPDATE horarios_curso SET id_curso = ?, dia_semana = ?, hora_inicio = ?, hora_fin = ? WHERE id_horario = ?";
         $stmt = $this->conexion->prepare($sql);
         if (!$stmt) return false;
-        $stmt->bind_param("iiissi",
-            $datos['id_curso'],
-            $datos['id_aula'],
-            $datos['dia_semana'],
-            $datos['hora_inicio'],
-            $datos['hora_fin'],
-            $datos['id_horario']
-        );
+        
+        $stmt->bind_param("iissi", $datos['id_curso'], $datos['dia_semana'], $datos['hora_inicio'], $datos['hora_fin'], $datos['id_horario']);
+        
         try {
             $stmt->execute();
             return true;
         } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) return "Choque de horario detectado.";
             return false;
         }
     }

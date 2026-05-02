@@ -21,35 +21,19 @@
 
             <div class="form-row">
                 <div class="form-col">
-                    <label for="id_evaluacion">Evaluación:</label>
-                    <select id="id_evaluacion" name="id_evaluacion" required>
-                        <option value="">Seleccione una evaluación...</option>
-                        <?php foreach ($evaluaciones as $ev): ?>
-                            <option value="<?php echo htmlspecialchars($ev['id_evaluacion']); ?>"
-                                <?php echo ($calificacion['id_evaluacion'] == $ev['id_evaluacion']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($ev['nombre_curso'] . ' — ' . $ev['nombre_tipo'] . ' (máx. ' . $ev['punteo'] . ')'); ?>
+                    <label for="id_entrega">Entrega:</label>
+                    <select id="id_entrega" name="id_entrega" required>
+                        <?php foreach ($entregas as $en): ?>
+                            <option value="<?php echo htmlspecialchars($en['id_entrega']); ?>" <?php echo ($calificacion['id_entrega'] == $en['id_entrega']) ? 'selected' : ''; ?>>
+                                <?php echo htmlspecialchars($en['nombre_alumno'] . " - " . $en['nombre_tipo'] . " (" . $en['nombre_curso'] . ")"); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-col">
-                    <label for="id_alumno">Alumno:</label>
-                    <select id="id_alumno" name="id_alumno" required>
-                        <option value="">Seleccione un alumno...</option>
-                        <?php foreach ($alumnos as $alumno): ?>
-                            <option value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>"
-                                <?php echo ($calificacion['id_alumno'] == $alumno['id_alumno']) ? 'selected' : ''; ?>>
-                                <?php echo htmlspecialchars($alumno['id_alumno'] . ' - ' . $alumno['nombres'] . ' ' . $alumno['apellidos']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
                 <div class="form-col">
                     <label for="nota">Nota:</label>
-                    <input type="number" step="0.01" min="0" id="nota" name="nota"
-                        value="<?php echo htmlspecialchars($calificacion['nota']); ?>" required>
+                    <input type="number" step="0.01" min="0" id="nota" name="nota" 
+                           value="<?php echo htmlspecialchars($calificacion['nota']); ?>" required>
                 </div>
             </div>
             <div>

@@ -29,7 +29,6 @@
                                     <span>📅 <?php echo htmlspecialchars($curso['fecha_inicio']); ?> — <?php echo htmlspecialchars($curso['fecha_fin']); ?></span>
                                 </div>
                             </a>
-                            <a class="btn btn-edit-sm" href="index.php?action=curso_edit&codigo=<?php echo urlencode($curso['id_curso']); ?>" style="margin-top:12px;display:inline-block;">Editar</a>
                         </div>
                     <?php endforeach; ?>
                 </div>

@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="./assets/css/styles.css">
-    <title>Crear Calificación</title>
+    <title>Calificar Entrega</title>
 </head>
 <body class="user-body-bg">
     <?php include __DIR__ . '/../navbar.php'; ?>
 
     <div class="form-container" style="margin-top: 100px;">
-        <h2 class="form-title">Crear Calificación</h2>
+        <h2 class="form-title">Calificar Entrega</h2>
 
         <?php if (isset($error)): ?>
             <div class="alert-error"><?php echo htmlspecialchars($error); ?></div>
@@ -19,41 +19,28 @@
         <form action="index.php?action=calificacion_create" method="POST" class="user-form">
             <div class="form-row">
                 <div class="form-col">
-                    <label for="id_evaluacion">Evaluación:</label>
-                    <select id="id_evaluacion" name="id_evaluacion" required>
-                        <option value="">Seleccione una evaluación...</option>
-                        <?php foreach ($evaluaciones as $ev): ?>
-                            <option value="<?php echo htmlspecialchars($ev['id_evaluacion']); ?>">
-                                <?php echo htmlspecialchars($ev['nombre_curso'] . ' — ' . $ev['nombre_tipo'] . ' (máx. ' . $ev['punteo'] . ')'); ?>
+                    <label for="id_entrega">Entrega Pendiente:</label>
+                    <select id="id_entrega" name="id_entrega" required>
+                        <option value="">Seleccione una entrega...</option>
+                        <?php foreach ($entregas as $en): ?>
+                            <option value="<?php echo htmlspecialchars($en['id_entrega']); ?>">
+                                <?php echo htmlspecialchars($en['nombre_alumno'] . " - " . $en['nombre_tipo'] . " (" . $en['nombre_curso'] . ")"); ?>
                             </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
-                <div class="form-col">
-                    <label for="id_alumno">Alumno:</label>
-                    <select id="id_alumno" name="id_alumno" required>
-                        <option value="">Seleccione un alumno...</option>
-                        <?php foreach ($alumnos as $alumno): ?>
-                            <option value="<?php echo htmlspecialchars($alumno['id_alumno']); ?>">
-                                <?php echo htmlspecialchars($alumno['id_alumno'] . ' - ' . $alumno['nombres'] . ' ' . $alumno['apellidos']); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-            </div>
-            <div class="form-row">
                 <div class="form-col">
                     <label for="nota">Nota:</label>
-                    <input type="number" step="0.01" min="0" id="nota" name="nota" placeholder="Ej: 85.50" required>
+                    <input type="number" step="0.01" min="0" id="nota" name="nota" placeholder="Ej: 95.00" required>
                 </div>
             </div>
             <div>
                 <label for="comentarios_profesor">Comentarios del Profesor:</label>
-                <textarea id="comentarios_profesor" name="comentarios_profesor" placeholder="Observaciones opcionales..."></textarea>
+                <textarea id="comentarios_profesor" name="comentarios_profesor" placeholder="Observaciones sobre el trabajo..."></textarea>
             </div>
             <div class="form-actions">
                 <a class="btn btn-cancel" href="index.php?action=calificaciones">Cancelar</a>
-                <button class="btn btn-submit" type="submit">Guardar</button>
+                <button class="btn btn-submit" type="submit">Guardar Calificación</button>
             </div>
         </form>
     </div>

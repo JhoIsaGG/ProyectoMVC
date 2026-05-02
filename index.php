@@ -18,6 +18,7 @@ require "controller/HorariosCursoController.php";
 require "controller/AsistenciasController.php";
 require "controller/AulasController.php";
 require "controller/CalificacionesController.php";
+require "controller/EntregasController.php";
 
 
 $router = new Router();
@@ -36,6 +37,7 @@ $horariosController = new HorariosCursoController();
 $asistenciasController = new AsistenciasController();
 $aulasController = new AulasController();
 $calificacionesController = new CalificacionesController();
+$entregasController = new EntregasController();
 
 $controllers = [
     'usuario' => [$usuariosController, 'usuarios'],
@@ -52,6 +54,7 @@ $controllers = [
     'asistencia' => [$asistenciasController, 'asistencias'],
     'aula' => [$aulasController, 'aulas'],
     'calificacion' => [$calificacionesController, 'calificaciones'],
+    'entrega' => [$entregasController, 'entregas'],
 ];
 
 $router->add('usuario_login', [$usuariosController, 'login']);
