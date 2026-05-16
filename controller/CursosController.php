@@ -48,6 +48,13 @@ class CursosController {
         include __DIR__ ."/../view/cursos/index.php";
     }
 
+
+    public function top_alumnos(): void {
+        $id_curso = $_GET['id_curso'] ?? null;
+        $alumnos = $this->modelo->getAlumnosTop($id_curso);
+        include __DIR__ ."/../view/alumnos/alumnosTop.php";
+    }
+
     public function cursos_por_nivel(): void {
         $id_nivel = $_GET['id_nivel'] ?? null;
         if (!$id_nivel) {

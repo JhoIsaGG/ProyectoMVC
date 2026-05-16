@@ -72,6 +72,9 @@ $router->add('curso_alumnos', [$cursosController, 'curso_alumnos']);
 $router->add('asistencia_batch', [$asistenciasController, 'asistencia_batch']);
 $router->add('usuario_search', [$usuariosController, 'search']);
 $router->add('curso_detalle', [$evaluacionesController, 'detalle']);
+$router->add('curso_top_alumnos', [$cursosController, 'top_alumnos']);
+
+
 
 foreach ($controllers as $singular => $data) {
     $controllerObj = $data[0];

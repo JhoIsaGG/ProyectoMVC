@@ -50,6 +50,12 @@
                     <p style="margin-top: 10px; color: #ccc;">Inscribir y gestionar alumnos del curso.</p>
                 </a>
                 <?php endif; ?>
+
+                  <a href="index.php?action=curso_top_alumnos&id_curso=<?php echo urlencode($curso['id_curso']); ?>" class="dashboard-card">
+                    <span class="dashboard-icon">✅</span>
+                    <span class="dashboard-title">Top 10 Alumnos</span>
+                    <p style="margin-top: 10px; color: #ccc;">Ver los 10 mejores alumnos del curso.</p>
+                </a>
             </div>
 
         </div>

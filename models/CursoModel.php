@@ -6,6 +6,31 @@ class CursoModel {
         $this->conexion = $conexion;
     }
 
+
+    public function getAlumnosTop($id_curso): array {
+    $sql = "SELECT en.id_alumno, SUM(c.nota) as nota
+            FROM evaluaciones ev
+            JOIN entregas en ON en.id_evaluacion = ev.id_evaluacion
+            JOIN calificaciones c ON c.id_entrega = en.id_entrega
+            WHERE ev.id_curso = ?
+            GROUP BY en.id_alumno
+            ORDER BY c.nota DESC
+            LIMIT 10
+            ";
+            $stmt = $this->conexion->prepare($sql);
+            $stmt->bind_param("s", $id_curso);
+
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $items = [];
+            while ($row = $result->fetch_assoc()) {
+                $alumnos[] = $row;
+            }
+            return $alumnos;
+
+    }
+
+
     public function getCursoModels(): array {
         $sql = "SELECT c.*, i.nombre AS nombre_idioma, n.nombre AS nombre_nivel, 
                        CONCAT(u.nombres, ' ', u.apellidos) AS nombre_profesor,
